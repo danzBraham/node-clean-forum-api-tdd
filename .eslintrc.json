@@ -17,6 +17,7 @@
     "jest/prefer-to-have-length": "warn",
     "jest/valid-expect": "error",
     "no-underscore-dangle": "off",
-    "class-methods-use-this": "off"
+    "class-methods-use-this": "off",
+    "no-unused-vars": "warn"
   }
 }
