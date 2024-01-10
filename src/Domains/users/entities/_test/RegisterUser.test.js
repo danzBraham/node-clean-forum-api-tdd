@@ -1,6 +1,6 @@
 const RegisterUser = require('../RegisterUser');
 
-describe('a RegisterUser entity', () => {
+describe('RegisterUser entity', () => {
   it('should throw an error when the payload does not contain the required properties', () => {
     // Arrange
     const payload = {
@@ -16,8 +16,8 @@ describe('a RegisterUser entity', () => {
     // Arrange
     const payload = {
       username: 'danzbraham',
-      fullname: true,
       password: 123,
+      fullname: true,
     };
 
     // Action and Assert
@@ -28,8 +28,8 @@ describe('a RegisterUser entity', () => {
     // Arrange
     const payload = {
       username: 'danzbrahamdanzbrahamdanzbrahamdanzbrahamdanzbrahamdanzbraham',
-      fullname: 'Zidan Abraham',
       password: 'secret',
+      fullname: 'Zidan Abraham',
     };
 
     // Action and Assert
@@ -40,11 +40,29 @@ describe('a RegisterUser entity', () => {
     // Arrange
     const payload = {
       username: 'danz braham',
-      fullname: 'Zidan Abraham',
       password: 'secret',
+      fullname: 'Zidan Abraham',
     };
 
     // Action and Assert
     expect(() => new RegisterUser(payload)).toThrow('REGISTER_USER.USERNAME_CONTAIN_RESTRICTED_CHARACTER');
+  });
+
+  it('should create RegisterUser entity correctly', () => {
+    // Arrange
+    const payload = {
+      username: 'danzbraham',
+      password: 'secret',
+      fullname: 'Zidan Abraham',
+    };
+
+    // Action
+    const registerUser = new RegisterUser(payload);
+
+    // Assert
+    expect(registerUser).toBeInstanceOf(RegisterUser);
+    expect(registerUser.username).toEqual(payload.username);
+    expect(registerUser.password).toEqual(payload.password);
+    expect(registerUser.fullname).toEqual(payload.fullname);
   });
 });
