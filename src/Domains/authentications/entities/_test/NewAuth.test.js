@@ -1,6 +1,6 @@
 const NewAuth = require('../NewAuth');
 
-describe('NewAuth entities', () => {
+describe('NewAuth entity', () => {
   it('should throw an error when the payload does not contain the required properties', () => {
     // Arrange
     const payload = {
@@ -22,7 +22,7 @@ describe('NewAuth entities', () => {
     expect(() => new NewAuth(payload)).toThrow('NEW_AUTH.NOT_MEET_DATA_TYPE_SPECIFICATION');
   });
 
-  it('should create NewAuth entities correctly', () => {
+  it('should create NewAuth entity correctly', () => {
     // Arrange
     const payload = {
       accessToken: 'access-token',
