@@ -1,6 +1,6 @@
 const RegisteredUser = require('../RegisteredUser');
 
-describe('a RegisteredUser entity', () => {
+describe('RegisteredUser entity', () => {
   it('should throw an error when the payload does not contain the required properties', () => {
     // Arrange
     const payload = {
@@ -24,7 +24,7 @@ describe('a RegisteredUser entity', () => {
     expect(() => new RegisteredUser(payload)).toThrow('REGISTERED_USER.NOT_MEET_DATA_TYPE_SPECIFICATION');
   });
 
-  it('should create registeredUser object correctly', () => {
+  it('should create RegisteredUser entity correctly', () => {
     // Arrange
     const payload = {
       id: 'user-123',
