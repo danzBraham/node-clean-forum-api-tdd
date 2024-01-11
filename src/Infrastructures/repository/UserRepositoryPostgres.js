@@ -1,8 +1,10 @@
 const InvariantError = require('../../Commons/InvariantError');
+const UserRepository = require('../../Domains/users/UserRepository');
 const RegisteredUser = require('../../Domains/users/entities/RegisteredUser');
 
-class UserRepositoryPostgres {
+class UserRepositoryPostgres extends UserRepository {
   constructor(pool, idGenerator) {
+    super();
     this._pool = pool;
     this._idGenerator = idGenerator;
   }
@@ -32,6 +34,36 @@ class UserRepositoryPostgres {
     const result = await this._pool.query(query);
 
     return new RegisteredUser({ ...result.rows[0] });
+  }
+
+  async getIdByUsername(username) {
+    const query = {
+      text: 'SELECT id FROM users WHERE username = $1',
+      values: [username],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (!result.rowCount) {
+      throw new InvariantError('user not found');
+    }
+
+    return result.rows[0].id;
+  }
+
+  async getPasswordByUsername(username) {
+    const query = {
+      text: 'SELECT password FROM users WHERE username = $1',
+      values: [username],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (!result.rowCount) {
+      throw new InvariantError('user not found');
+    }
+
+    return result.rows[0].password;
   }
 }
 
