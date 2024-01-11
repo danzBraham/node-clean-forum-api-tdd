@@ -8,11 +8,11 @@ const pool = require('./database/postgres/pool');
 
 // service (repository, helper, manager, etc)
 const UserRepositoryPostgres = require('./repository/UserRepositoryPostgres');
-const BcryptPasswordHash = require('./security/BcryptPasswordHash');
+const BcryptPasswordHasher = require('./security/BcryptPasswordHasher');
 
 // use case
 const AddUserUseCase = require('../Applications/use_case/AddUserUseCase');
-const PasswordHash = require('../Applications/security/PasswordHash');
+const PasswordHasher = require('../Applications/security/PasswordHasher');
 const UserRepository = require('../Domains/users/UserRepository');
 
 // creating container
@@ -31,8 +31,8 @@ container.register([
     },
   },
   {
-    key: PasswordHash.name,
-    Class: BcryptPasswordHash,
+    key: PasswordHasher.name,
+    Class: BcryptPasswordHasher,
     parameter: {
       dependencies: [
         { concrete: bcrypt },
@@ -50,7 +50,7 @@ container.register([
       injectType: 'destructuring',
       dependencies: [
         { name: 'userRepository', internal: UserRepository.name },
-        { name: 'passwordHash', internal: PasswordHash.name },
+        { name: 'passwordHasher', internal: PasswordHasher.name },
       ],
     },
   },

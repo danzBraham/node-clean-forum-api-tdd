@@ -1,6 +1,6 @@
-const PasswordHash = require('../../Applications/security/PasswordHash');
+const PasswordHasher = require('../../Applications/security/PasswordHasher');
 
-class BcryptPasswordHash extends PasswordHash {
+class BcryptPasswordHasher extends PasswordHasher {
   constructor(bcrypt, saltRound = 10) {
     super();
     this._bcrypt = bcrypt;
@@ -12,4 +12,4 @@ class BcryptPasswordHash extends PasswordHash {
   }
 }
 
-module.exports = BcryptPasswordHash;
+module.exports = BcryptPasswordHasher;

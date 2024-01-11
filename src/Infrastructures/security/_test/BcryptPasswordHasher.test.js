@@ -1,15 +1,15 @@
 const bcrypt = require('bcrypt');
-const BcryptPasswordHash = require('../BcryptPasswordHash');
+const BcryptPasswordHasher = require('../BcryptPasswordHasher');
 
-describe('BcryptPasswordHash', () => {
+describe('BcryptPasswordHasher', () => {
   describe('hash function', () => {
     it('should encrypt password correctly', async () => {
       // Arrange
       const spyHash = jest.spyOn(bcrypt, 'hash');
-      const bcryptPasswordHash = new BcryptPasswordHash(bcrypt);
+      const bcryptPasswordHasher = new BcryptPasswordHasher(bcrypt);
 
       // Action
-      const encryptedPassword = await bcryptPasswordHash.hash('plain-password');
+      const encryptedPassword = await bcryptPasswordHasher.hash('plain-password');
 
       // Assert
       expect(typeof encryptedPassword).toEqual('string');
