@@ -20,7 +20,7 @@ describe('BcryptPasswordHasher', () => {
   });
 
   describe('compare function', () => {
-    it('should throw an AuthenticationError when comparing incorrect passwords', async () => {
+    it('should throw an AuthenticationError if password not match', async () => {
       // Arrange
       const spyCompare = jest.spyOn(bcrypt, 'compare');
       const bcryptPasswordHasher = new BcryptPasswordHasher(bcrypt);
@@ -34,12 +34,12 @@ describe('BcryptPasswordHasher', () => {
       expect(spyCompare).toHaveBeenCalledWith(password, encryptedPassword);
     });
 
-    it('should not throw an AuthenticationError when comparing correct passwords', async () => {
+    it('should not throw an AuthenticationError if password match', async () => {
       // Arrange
       const spyCompare = jest.spyOn(bcrypt, 'compare');
       const bcryptPasswordHasher = new BcryptPasswordHasher(bcrypt);
       const password = 'plain-password';
-      const encryptedPassword = await bcrypt.hash(password, 10);
+      const encryptedPassword = await bcryptPasswordHasher.hash(password);
 
       // Action
       await expect(bcryptPasswordHasher.compare(password, encryptedPassword))
