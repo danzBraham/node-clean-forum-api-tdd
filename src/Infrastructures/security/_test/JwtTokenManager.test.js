@@ -10,15 +10,17 @@ describe('JwtTokenManager', () => {
         id: 'user-123',
         username: 'danzbraham',
       };
-      const spyGenerate = jest.spyOn(Jwt.token, 'generate');
-      const jwtTokenManager = new JwtTokenManager(Jwt.token);
+      const mockJwtToken = {
+        generate: jest.fn().mockImplementation(() => Promise.resolve('mock-access-token')),
+      };
+      const jwtTokenManager = new JwtTokenManager(mockJwtToken);
 
       // Action
       const accessToken = await jwtTokenManager.createAccessToken(payload);
 
       // Assert
-      expect(typeof accessToken).toEqual('string');
-      expect(spyGenerate).toHaveBeenCalledWith(payload, process.env.ACCESS_TOKEN_KEY);
+      expect(accessToken).toEqual('mock-access-token');
+      expect(mockJwtToken.generate).toHaveBeenCalledWith(payload, process.env.ACCESS_TOKEN_KEY);
     });
   });
 
@@ -29,15 +31,17 @@ describe('JwtTokenManager', () => {
         id: 'user-123',
         username: 'danzbraham',
       };
-      const spyGenerate = jest.spyOn(Jwt.token, 'generate');
-      const jwtTokenManager = new JwtTokenManager(Jwt.token);
+      const mockJwtToken = {
+        generate: jest.fn().mockImplementation(() => Promise.resolve('mock-refresh-token')),
+      };
+      const jwtTokenManager = new JwtTokenManager(mockJwtToken);
 
       // Action
       const refreshToken = await jwtTokenManager.createRefreshToken(payload);
 
       // Assert
-      expect(typeof refreshToken).toEqual('string');
-      expect(spyGenerate).toHaveBeenCalledWith(payload, process.env.REFRESH_TOKEN_KEY);
+      expect(refreshToken).toEqual('mock-refresh-token');
+      expect(mockJwtToken.generate).toHaveBeenCalledWith(payload, process.env.REFRESH_TOKEN_KEY);
     });
   });
 
@@ -49,8 +53,8 @@ describe('JwtTokenManager', () => {
         username: 'danzbraham',
       };
       const spyDecode = jest.spyOn(Jwt.token, 'decode');
-      const accessToken = Jwt.token.generate(payload, process.env.ACCESS_TOKEN_KEY);
       const jwtTokenManager = new JwtTokenManager(Jwt.token);
+      const accessToken = await jwtTokenManager.createAccessToken(payload);
 
       // Action
       const decodedPayload = await jwtTokenManager.decodePayload(accessToken);
@@ -84,9 +88,9 @@ describe('JwtTokenManager', () => {
       };
       const spyDecode = jest.spyOn(Jwt.token, 'decode');
       const spyVerify = jest.spyOn(Jwt.token, 'verify');
-      const refreshToken = Jwt.token.generate(payload, process.env.REFRESH_TOKEN_KEY);
-      const artifacts = Jwt.token.decode(refreshToken);
       const jwtTokenManager = new JwtTokenManager(Jwt.token);
+      const refreshToken = await jwtTokenManager.createRefreshToken(payload);
+      const artifacts = Jwt.token.decode(refreshToken);
 
       // Action & Assert
       await expect(jwtTokenManager.verifyRefreshToken(refreshToken))
