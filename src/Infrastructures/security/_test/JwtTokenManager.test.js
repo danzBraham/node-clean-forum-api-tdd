@@ -49,8 +49,8 @@ describe('JwtTokenManager', () => {
         username: 'danzbraham',
       };
       const spyDecode = jest.spyOn(Jwt.token, 'decode');
+      const accessToken = Jwt.token.generate(payload, process.env.ACCESS_TOKEN_KEY);
       const jwtTokenManager = new JwtTokenManager(Jwt.token);
-      const accessToken = await jwtTokenManager.createAccessToken(payload);
 
       // Action
       const decodedPayload = await jwtTokenManager.decodePayload(accessToken);
@@ -84,9 +84,9 @@ describe('JwtTokenManager', () => {
       };
       const spyDecode = jest.spyOn(Jwt.token, 'decode');
       const spyVerify = jest.spyOn(Jwt.token, 'verify');
-      const jwtTokenManager = new JwtTokenManager(Jwt.token);
-      const refreshToken = await jwtTokenManager.createRefreshToken(payload);
+      const refreshToken = Jwt.token.generate(payload, process.env.REFRESH_TOKEN_KEY);
       const artifacts = Jwt.token.decode(refreshToken);
+      const jwtTokenManager = new JwtTokenManager(Jwt.token);
 
       // Action & Assert
       await expect(jwtTokenManager.verifyRefreshToken(refreshToken))
