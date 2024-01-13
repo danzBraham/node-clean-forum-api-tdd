@@ -265,4 +265,82 @@ describe('/authentications endpoint', () => {
       expect(responseJson.message).toEqual('refresh token not found in the database');
     });
   });
+
+  describe('when DELETE /authentications', () => {
+    it('should response 200 if the user logs out successfully', async () => {
+      // Arrange
+      const server = await createServer(container);
+      const refreshToken = 'refresh-token';
+      await AuthenticationsTableTestHelper.addToken(refreshToken);
+
+      // Action
+      const response = await server.inject({
+        method: 'DELETE',
+        url: '/authentications',
+        payload: { refreshToken },
+      });
+
+      // Assert
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(200);
+      expect(responseJson.status).toEqual('success');
+    });
+
+    it('should response 400 if the request payload does not contain a refresh token', async () => {
+      // Arrange
+      const server = await createServer(container);
+
+      // Action
+      const response = await server.inject({
+        method: 'DELETE',
+        url: '/authentications',
+        payload: {},
+      });
+
+      // Assert
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(400);
+      expect(responseJson.status).toEqual('fail');
+      expect(responseJson.message).toEqual('must provide a refresh token');
+    });
+
+    it('should response 400 if the refresh token is not a string', async () => {
+      // Arrange
+      const server = await createServer(container);
+
+      // Action
+      const response = await server.inject({
+        method: 'DELETE',
+        url: '/authentications',
+        payload: { refreshToken: [true] },
+      });
+
+      // Assert
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(400);
+      expect(responseJson.status).toEqual('fail');
+      expect(responseJson.message).toEqual('refresh token must be a string');
+    });
+
+    it('should response 400 if the refresh token is not registered in the database', async () => {
+      // Arrange
+      const server = await createServer(container);
+      const refreshToken = await container
+        .getInstance(AuthenticationTokenManager.name)
+        .createRefreshToken({ id: 'user-123', username: 'danzbraham' });
+
+      // Action
+      const response = await server.inject({
+        method: 'DELETE',
+        url: '/authentications',
+        payload: { refreshToken },
+      });
+
+      // Assert
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(400);
+      expect(responseJson.status).toEqual('fail');
+      expect(responseJson.message).toEqual('refresh token not found in the database');
+    });
+  });
 });

@@ -15,6 +15,8 @@ DomainErrorTranslator._directories = {
   'USER_LOGIN.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('username and password must be strings'),
   'REFRESH_AUTHENTICATION_USE_CASE.NOT_CONTAIN_REFRESH_TOKEN': new InvariantError('must provide a refresh token'),
   'REFRESH_AUTHENTICATION_USE_CASE.PAYLOAD_MOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('refresh token must be a string'),
+  'USER_LOGOUT_USE_CASE.NOT_CONTAIN_REFRESH_TOKEN': new InvariantError('must provide a refresh token'),
+  'USER_LOGOUT_USE_CASE.PAYLOAD_MOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('refresh token must be a string'),
 };
 
 module.exports = DomainErrorTranslator;
