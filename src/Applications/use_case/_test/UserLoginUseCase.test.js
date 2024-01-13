@@ -13,7 +13,7 @@ describe('UserLoginUseCase', () => {
       username: 'danzbraham',
       password: 'secret',
     });
-    const mockAuthentication = new NewAuth({
+    const mockedAuthentication = new NewAuth({
       accessToken: 'access-token',
       refreshToken: 'refresh-token',
     });
@@ -30,9 +30,9 @@ describe('UserLoginUseCase', () => {
     mockUserRepository.getIdByUsername = jest.fn()
       .mockImplementation(() => Promise.resolve('user-123'));
     mockAuthenticationTokenManager.createAccessToken = jest.fn()
-      .mockImplementation(() => Promise.resolve(mockAuthentication.accessToken));
+      .mockImplementation(() => Promise.resolve(mockedAuthentication.accessToken));
     mockAuthenticationTokenManager.createRefreshToken = jest.fn()
-      .mockImplementation(() => Promise.resolve(mockAuthentication.refreshToken));
+      .mockImplementation(() => Promise.resolve(mockedAuthentication.refreshToken));
     mockAuthenticationRepository.addToken = jest.fn()
       .mockImplementation(() => Promise.resolve());
 
@@ -63,6 +63,6 @@ describe('UserLoginUseCase', () => {
     expect(mockAuthenticationTokenManager.createRefreshToken)
       .toHaveBeenCalledWith({ id: 'user-123', username: 'danzbraham' });
     expect(mockAuthenticationRepository.addToken)
-      .toHaveBeenCalledWith(mockAuthentication.refreshToken);
+      .toHaveBeenCalledWith(mockedAuthentication.refreshToken);
   });
 });
