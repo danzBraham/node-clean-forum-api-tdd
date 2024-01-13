@@ -13,6 +13,8 @@ DomainErrorTranslator._directories = {
   'REGISTER_USER.USERNAME_CONTAIN_RESTRICTED_CHARACTER': new InvariantError('cannot create a new user because the username contains a restricted character'),
   'USER_LOGIN.NOT_CONTAIN_REQUIRED_PROPERTY': new InvariantError('must provide a username and password'),
   'USER_LOGIN.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('username and password must be strings'),
+  'REFRESH_AUTHENTICATION_USE_CASE.NOT_CONTAIN_REFRESH_TOKEN': new InvariantError('must provide a refresh token'),
+  'REFRESH_AUTHENTICATION_USE_CASE.PAYLOAD_MOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('refresh token must be a string'),
 };
 
 module.exports = DomainErrorTranslator;
