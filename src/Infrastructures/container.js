@@ -1,26 +1,31 @@
 // istanbul ignore file
 const { createContainer } = require('instances-container');
 
-// external agency
+// external agencies
 const { nanoid } = require('nanoid');
 const bcrypt = require('bcrypt');
 const Jwt = require('@hapi/jwt');
 const pool = require('./database/postgres/pool');
 
-// service (repository, helper, manager, etc)
+// infrastructure services (concrete repository, helper, manager, etc)
 const UserRepositoryPostgres = require('./repository/UserRepositoryPostgres');
 const AuthenticationRepositoryPostgres = require('./repository/AuthenticationRepositoryPostgres');
 const BcryptPasswordHasher = require('./security/BcryptPasswordHasher');
 const JwtTokenManager = require('./security/JwtTokenManager');
 
-// use case
+// domain repositories
+const UserRepository = require('../Domains/users/UserRepository');
+const AuthenticationRepository = require('../Domains/authentications/AuthenticationRepository');
+
+// app helpers
+const PasswordHasher = require('../Applications/security/PasswordHasher');
+const AuthenticationTokenManager = require('../Applications/security/AuthenticationTokenManager');
+
+// app use cases
 const AddUserUseCase = require('../Applications/use_case/AddUserUseCase');
 const UserLoginUseCase = require('../Applications/use_case/UserLoginUseCase');
 const RefreshAuthenticationUseCase = require('../Applications/use_case/RefreshAuthenticationUseCase');
-const PasswordHasher = require('../Applications/security/PasswordHasher');
-const AuthenticationTokenManager = require('../Applications/security/AuthenticationTokenManager');
-const UserRepository = require('../Domains/users/UserRepository');
-const AuthenticationRepository = require('../Domains/authentications/AuthenticationRepository');
+const UserLogoutUseCase = require('../Applications/use_case/UserLogoutUseCase');
 
 // creating container
 const container = createContainer();
@@ -100,6 +105,16 @@ container.register([
       dependencies: [
         { name: 'authenticationRepository', internal: AuthenticationRepository.name },
         { name: 'authenticationTokenManager', internal: AuthenticationTokenManager.name },
+      ],
+    },
+  },
+  {
+    key: UserLogoutUseCase.name,
+    Class: UserLogoutUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        { name: 'authenticationRepository', internal: AuthenticationRepository.name },
       ],
     },
   },
