@@ -45,7 +45,7 @@ class UserRepositoryPostgres extends UserRepository {
     const result = await this._pool.query(query);
 
     if (!result.rowCount) {
-      throw new InvariantError('user not found');
+      throw new InvariantError('invalid username');
     }
 
     return result.rows[0].id;
@@ -60,7 +60,7 @@ class UserRepositoryPostgres extends UserRepository {
     const result = await this._pool.query(query);
 
     if (!result.rowCount) {
-      throw new InvariantError('user not found');
+      throw new InvariantError('invalid username');
     }
 
     return result.rows[0].password;

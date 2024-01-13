@@ -69,7 +69,7 @@ describe('/authentications endpoint', () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(400);
       expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual('user not found');
+      expect(responseJson.message).toEqual('invalid username');
     });
 
     it('should response 401 if the password is wrong', async () => {
