@@ -15,11 +15,6 @@ class JwtTokenManager extends AuthenticationTokenManager {
     return this._jwt.generate(payload, process.env.REFRESH_TOKEN_KEY);
   }
 
-  async decodePayload(token) {
-    const artifacts = await this._jwt.decode(token);
-    return artifacts.decoded.payload;
-  }
-
   async verifyRefreshToken(token) {
     try {
       const artifacts = await this._jwt.decode(token);
@@ -27,6 +22,11 @@ class JwtTokenManager extends AuthenticationTokenManager {
     } catch (error) {
       throw new InvariantError('Invalid refresh token');
     }
+  }
+
+  async decodePayload(token) {
+    const artifacts = await this._jwt.decode(token);
+    return artifacts.decoded.payload;
   }
 }
 
