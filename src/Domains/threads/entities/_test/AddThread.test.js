@@ -5,6 +5,7 @@ describe('AddThread', () => {
     // Arrange
     const payload = {
       title: 'My Thread',
+      body: 'Hello this is my Thread',
     };
 
     // Action & Assert
@@ -14,6 +15,7 @@ describe('AddThread', () => {
   it('should throw an error when the payload does not meet the data type specification', () => {
     // Arrange
     const payload = {
+      userId: 123,
       title: 'My Thread',
       body: [true],
     };
@@ -25,6 +27,7 @@ describe('AddThread', () => {
   it('should create AddThread entity correctly', () => {
     // Arrange
     const payload = {
+      userId: 'user-123',
       title: 'My Thread',
       body: 'Hello this is my Thread',
     };
@@ -34,6 +37,7 @@ describe('AddThread', () => {
 
     // Assert
     expect(addThread).toBeInstanceOf(AddThread);
+    expect(addThread.userId).toEqual(payload.userId);
     expect(addThread.title).toEqual(payload.title);
     expect(addThread.body).toEqual(payload.body);
   });
