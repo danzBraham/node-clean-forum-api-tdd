@@ -32,6 +32,12 @@ describe('RefreshAuthenticationUseCase', () => {
     const useCasePayload = {
       refreshToken: 'refresh-token',
     };
+    const tokenPayload = {
+      id: 'user-123',
+      username: 'danzbraham',
+    };
+    const expectedNewAccessToken = 'new-access-token';
+
     const mockAuthenticationRepository = new AuthenticationRepository();
     const mockAuthenticationTokenManager = new AuthenticationTokenManager();
 
@@ -62,7 +68,7 @@ describe('RefreshAuthenticationUseCase', () => {
     expect(mockAuthenticationTokenManager.decodePayload)
       .toHaveBeenCalledWith(useCasePayload.refreshToken);
     expect(mockAuthenticationTokenManager.createAccessToken)
-      .toHaveBeenCalledWith({ id: 'user-123', username: 'danzbraham' });
-    expect(accessToken).toEqual('new-access-token');
+      .toHaveBeenCalledWith(tokenPayload);
+    expect(accessToken).toEqual(expectedNewAccessToken);
   });
 });
