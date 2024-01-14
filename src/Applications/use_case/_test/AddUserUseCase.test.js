@@ -13,12 +13,6 @@ describe('AddUserUseCase', () => {
       fullname: 'Zidan Abraham',
     };
 
-    const mockedRegisteredUser = new RegisteredUser({
-      id: 'user-123',
-      username: 'danzbraham',
-      fullname: 'Zidan Abraham',
-    });
-
     // creating dependency of use case
     const mockUserRepository = new UserRepository();
     const mockPasswordHasher = new PasswordHasher();
@@ -29,7 +23,11 @@ describe('AddUserUseCase', () => {
     mockPasswordHasher.hash = jest.fn()
       .mockImplementation(() => Promise.resolve('hashed-password'));
     mockUserRepository.addUser = jest.fn()
-      .mockImplementation(() => Promise.resolve(mockedRegisteredUser));
+      .mockImplementation(() => Promise.resolve(new RegisteredUser({
+        id: 'user-123',
+        username: 'danzbraham',
+        fullname: 'Zidan Abraham',
+      })));
 
     // creating use case instance
     const addUserUseCase = new AddUserUseCase({
