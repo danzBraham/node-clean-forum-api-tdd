@@ -11,6 +11,15 @@ describe('AddThreadUseCase', () => {
       title: 'My Thread',
       body: 'Hello this is my Thread',
     };
+    const expectedAddThread = new AddThread({
+      userId,
+      ...useCasePayload,
+    });
+    const expectedAddedThread = new AddedThread({
+      id: 'thread-123',
+      title: useCasePayload.title,
+      owner: userId,
+    });
 
     // create dependency of use case
     const mockThreadRepository = new ThreadRepository();
@@ -31,16 +40,7 @@ describe('AddThreadUseCase', () => {
     const addedThread = await addThreadUseCase.execute(userId, useCasePayload);
 
     // Assert
-    expect(addedThread).toStrictEqual(new AddedThread({
-      id: 'thread-123',
-      title: 'My Thread',
-      owner: 'user-123',
-    }));
-    expect(mockThreadRepository.addThread)
-      .toHaveBeenCalledWith(new AddThread({
-        userId: 'user-123',
-        title: 'My Thread',
-        body: 'Hello this is my Thread',
-      }));
+    expect(addedThread).toStrictEqual(expectedAddedThread);
+    expect(mockThreadRepository.addThread).toHaveBeenCalledWith(expectedAddThread);
   });
 });
