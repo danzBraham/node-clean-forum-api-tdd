@@ -4,11 +4,17 @@ const CommentRepository = require('../../../Domains/comments/CommentRepository')
 const DeleteCommentUseCase = require('../DeleteCommentUseCase');
 
 describe('DeleteCommentUseCase', () => {
-  it('should orchestrating the comment comment action correctly', async () => {
+  it('should orchestrating the delete comment action correctly', async () => {
     // Arrange
     const userId = 'user-123';
     const threadId = 'thread-123';
-    const expectedDeleteComment = new DeleteComment({ userId, threadId });
+    const commentId = 'comment-123';
+
+    const expectedDeleteComment = new DeleteComment({
+      userId,
+      threadId,
+      commentId,
+    });
 
     // create dependency of use case
     const mockThreadRepository = new ThreadRepository();
@@ -17,7 +23,7 @@ describe('DeleteCommentUseCase', () => {
     // mocking required function
     mockThreadRepository.checkAvailabilityThread = jest.fn()
       .mockImplementation(() => Promise.resolve());
-    mockCommentRepository.verifyOwner = jest.fn()
+    mockCommentRepository.deleteComment = jest.fn()
       .mockImplementation(() => Promise.resolve());
 
     const deleteCommentUseCase = new DeleteCommentUseCase({
@@ -26,12 +32,12 @@ describe('DeleteCommentUseCase', () => {
     });
 
     // Action
-    await deleteCommentUseCase.execute(userId, threadId);
+    await deleteCommentUseCase.execute(userId, threadId, commentId);
 
     // Assert
     expect(mockThreadRepository.checkAvailabilityThread)
       .toHaveBeenCalledWith(expectedDeleteComment.threadId);
-    expect(mockCommentRepository.verifyOwner)
-      .toHaveBeenCalledWith(expectedDeleteComment.userId);
+    expect(mockCommentRepository.deleteComment)
+      .toHaveBeenCalledWith(expectedDeleteComment);
   });
 });
