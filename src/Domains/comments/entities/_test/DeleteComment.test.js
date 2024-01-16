@@ -16,6 +16,7 @@ describe('DeleteComment', () => {
     const payload = {
       userId: 'user-123',
       threadId: 123,
+      commentId: 'comment-123',
     };
 
     // Action & Assert
@@ -27,6 +28,7 @@ describe('DeleteComment', () => {
     const payload = {
       userId: 'user-123',
       threadId: 'thread-123',
+      commentId: 'comment-123',
     };
 
     // Action
@@ -36,5 +38,6 @@ describe('DeleteComment', () => {
     expect(deleteComment).toBeInstanceOf(DeleteComment);
     expect(deleteComment.userId).toEqual(payload.userId);
     expect(deleteComment.threadId).toEqual(payload.threadId);
+    expect(deleteComment.commentId).toEqual(payload.commentId);
   });
 });
