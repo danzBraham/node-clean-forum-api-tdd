@@ -19,6 +19,8 @@ DomainErrorTranslator._directories = {
   'USER_LOGOUT_USE_CASE.PAYLOAD_MOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('refresh token must be a string'),
   'ADD_THREAD.NOT_CONTAIN_REQUIRED_PROPERTY': new InvariantError('cannot create a new thread because the required properties are missing'),
   'ADD_THREAD.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('cannot create a new thread because the data type does not meet data type specification'),
+  'ADD_COMMENT.NOT_CONTAIN_REQUIRED_PROPERTY': new InvariantError('cannot create a new comment because the required properties are missing'),
+  'ADD_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('cannot create a new comment because the data type does not meet data type specification'),
 };
 
 module.exports = DomainErrorTranslator;

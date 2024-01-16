@@ -27,6 +27,8 @@ describe('DomainErrorTranslator', () => {
       .toStrictEqual(new InvariantError('cannot create a new thread because the required properties are missing'));
     expect(DomainErrorTranslator.translate(new Error('ADD_THREAD.NOT_MEET_DATA_TYPE_SPECIFICATION')))
       .toStrictEqual(new InvariantError('cannot create a new thread because the data type does not meet data type specification'));
+    expect(DomainErrorTranslator.translate(new Error('ADD_COMMENT.NOT_CONTAIN_REQUIRED_PROPERTY')))
+      .toStrictEqual(new InvariantError('cannot create a new comment because the required properties are missing'));
   });
 
   it('should return the original error when the error message is not needed to translate', () => {

@@ -1,21 +1,11 @@
 // istanbul ignore file
-const jwt = require('@hapi/jwt');
-const UsersTableTestHelper = require('./UsersTableTestHelper');
+const Jwt = require('@hapi/jwt');
 
 const ServerTestHelper = {
-  async getAccessToken() {
-    const payload = {
-      id: 'user-123',
-      username: 'danzbraham',
-    };
-
-    await UsersTableTestHelper.addUser({
-      ...payload,
-      password: 'secret',
-      fullname: 'Zidan Abraham',
-    });
-
-    return jwt.token.generate(payload, process.env.ACCESS_TOKEN_KEY);
+  async getAccessToken({
+    id = 'user-123', username = 'danzbraham', password = 'secret', fullname = 'Zidan Abraham',
+  }) {
+    return Jwt.token.generate({ id, username }, process.env.ACCESS_TOKEN_KEY);
   },
 };
 

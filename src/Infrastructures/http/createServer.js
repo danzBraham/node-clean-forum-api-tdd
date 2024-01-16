@@ -3,6 +3,7 @@ const Jwt = require('@hapi/jwt');
 const users = require('../../Interfaces/http/api/users');
 const authentications = require('../../Interfaces/http/api/authentications');
 const threads = require('../../Interfaces/http/api/threads');
+const comments = require('../../Interfaces/http/api/comments');
 const ClientError = require('../../Commons/ClientError');
 const DomainErrorTranslator = require('../../Commons/DomainErrorTranslator');
 
@@ -48,6 +49,10 @@ const createServer = async (container) => {
     },
     {
       plugin: threads,
+      options: { container },
+    },
+    {
+      plugin: comments,
       options: { container },
     },
   ]);
