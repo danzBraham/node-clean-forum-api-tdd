@@ -9,6 +9,7 @@ class DeleteCommentUseCase {
   async execute(userId, threadId, commentId) {
     const deleteComment = new DeleteComment({ userId, threadId, commentId });
     await this._threadRepository.checkAvailabilityThread(deleteComment.threadId);
+    await this._commentRepository.checkAvailabilityComment(deleteComment.commentId);
     await this._commentRepository.deleteComment(deleteComment);
   }
 }

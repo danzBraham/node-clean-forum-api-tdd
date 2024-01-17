@@ -23,6 +23,8 @@ describe('DeleteCommentUseCase', () => {
     // mocking required function
     mockThreadRepository.checkAvailabilityThread = jest.fn()
       .mockImplementation(() => Promise.resolve());
+    mockCommentRepository.checkAvailabilityComment = jest.fn()
+      .mockImplementation(() => Promise.resolve());
     mockCommentRepository.deleteComment = jest.fn()
       .mockImplementation(() => Promise.resolve());
 
@@ -37,6 +39,8 @@ describe('DeleteCommentUseCase', () => {
     // Assert
     expect(mockThreadRepository.checkAvailabilityThread)
       .toHaveBeenCalledWith(expectedDeleteComment.threadId);
+    expect(mockCommentRepository.checkAvailabilityComment)
+      .toHaveBeenCalledWith(expectedDeleteComment.commentId);
     expect(mockCommentRepository.deleteComment)
       .toHaveBeenCalledWith(expectedDeleteComment);
   });
