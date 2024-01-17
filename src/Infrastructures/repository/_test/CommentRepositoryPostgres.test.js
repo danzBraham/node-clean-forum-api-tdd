@@ -7,6 +7,7 @@ const DeleteComment = require('../../../Domains/comments/entities/DeleteComment'
 const pool = require('../../database/postgres/pool');
 const CommentRepositoryPostgres = require('../CommentRepositoryPostgres');
 const AuthorizationError = require('../../../Commons/AuthorizationError');
+const NotFoundError = require('../../../Commons/NotFoundError');
 
 describe('CommentRepositoryPostgres', () => {
   afterEach(async () => {
@@ -65,17 +66,40 @@ describe('CommentRepositoryPostgres', () => {
     });
   });
 
-  describe('deleteComment function', () => {
-    it('should throw AuthorizationError if not delete own comment', async () => {
+  describe('checkAvailabilityComment function', () => {
+    it('should throw a NotFoundError if the comment is not found', async () => {
       // Arrange
       const comment = new DeleteComment({
         userId: 'user-456',
         threadId: 'thread-123',
         commentId: 'comment-123',
       });
+
+      await UsersTableTestHelper.addUser(comment.userId);
+      await ThreadsTableTestHelper.addThread(comment.threadId);
+
+      const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
+
+      // Action & Assert
+      await expect(commentRepositoryPostgres.checkAvailabilityComment(comment.commentId))
+        .rejects
+        .toThrow(NotFoundError);
+    });
+  });
+
+  describe('deleteComment function', () => {
+    it("should throw an AuthorizationError if trying to delete someone else's comment", async () => {
+      // Arrange
+      const comment = new DeleteComment({
+        userId: 'user-456',
+        threadId: 'thread-123',
+        commentId: 'comment-123',
+      });
+
       await UsersTableTestHelper.addUser({ id: 'user-123' });
       await ThreadsTableTestHelper.addThread(comment.threadId);
       await CommentsTableTestHelper.addComment({ id: comment.commentId, owner: 'user-123' });
+
       const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
 
       // Action & Assert
@@ -91,9 +115,11 @@ describe('CommentRepositoryPostgres', () => {
         threadId: 'thread-123',
         commentId: 'comment-123',
       });
+
       await UsersTableTestHelper.addUser(comment.userId);
       await ThreadsTableTestHelper.addThread(comment.threadId);
       await CommentsTableTestHelper.addComment(comment.commentId);
+
       const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
 
       // Action

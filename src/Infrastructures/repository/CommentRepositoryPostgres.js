@@ -3,6 +3,7 @@ const AddedComment = require('../../Domains/comments/entities/AddedComment');
 const DeleteComment = require('../../Domains/comments/entities/DeleteComment');
 const CommentRepository = require('../../Domains/comments/CommentRepository');
 const AuthorizationError = require('../../Commons/AuthorizationError');
+const NotFoundError = require('../../Commons/NotFoundError');
 
 class CommentRepositoryPostgres extends CommentRepository {
   constructor(pool, idGenerator) {
@@ -23,6 +24,18 @@ class CommentRepositoryPostgres extends CommentRepository {
     const result = await this._pool.query(query);
 
     return new AddedComment({ ...result.rows[0] });
+  }
+
+  async checkAvailabilityComment(commentId) {
+    const query = {
+      text: 'SELECT id FROM comments WHERE id = $1',
+      values: [commentId],
+    };
+    const result = await this._pool.query(query);
+
+    if (!result.rowCount) {
+      throw new NotFoundError('comment not found');
+    }
   }
 
   async deleteComment(comment) {
