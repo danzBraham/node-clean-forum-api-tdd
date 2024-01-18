@@ -21,6 +21,8 @@ DomainErrorTranslator._directories = {
   'ADD_THREAD.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('cannot create a new thread because the data type does not meet data type specification'),
   'ADD_COMMENT.NOT_CONTAIN_REQUIRED_PROPERTY': new InvariantError('cannot create a new comment because the required properties are missing'),
   'ADD_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('cannot create a new comment because the data type does not meet data type specification'),
+  'ADD_REPLY.NOT_CONTAIN_REQUIRED_PROPERTY': new InvariantError('cannot create a new reply because the required properties are missing'),
+  'ADD_REPLY.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('cannot create a new reply because the data type does not meet data type specification'),
 };
 
 module.exports = DomainErrorTranslator;

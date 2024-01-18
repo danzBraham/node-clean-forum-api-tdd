@@ -29,6 +29,12 @@ describe('DomainErrorTranslator', () => {
       .toStrictEqual(new InvariantError('cannot create a new thread because the data type does not meet data type specification'));
     expect(DomainErrorTranslator.translate(new Error('ADD_COMMENT.NOT_CONTAIN_REQUIRED_PROPERTY')))
       .toStrictEqual(new InvariantError('cannot create a new comment because the required properties are missing'));
+    expect(DomainErrorTranslator.translate(new Error('ADD_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION')))
+      .toStrictEqual(new InvariantError('cannot create a new comment because the data type does not meet data type specification'));
+    expect(DomainErrorTranslator.translate(new Error('ADD_REPLY.NOT_CONTAIN_REQUIRED_PROPERTY')))
+      .toStrictEqual(new InvariantError('cannot create a new reply because the required properties are missing'));
+    expect(DomainErrorTranslator.translate(new Error('ADD_REPLY.NOT_MEET_DATA_TYPE_SPECIFICATION')))
+      .toStrictEqual(new InvariantError('cannot create a new reply because the data type does not meet data type specification'));
   });
 
   it('should return the original error when the error message is not needed to translate', () => {
