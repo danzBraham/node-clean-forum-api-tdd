@@ -112,4 +112,45 @@ describe('/threads endpoint', () => {
       expect(responseJson.message).toEqual('cannot create a new thread because the data type does not meet data type specification');
     });
   });
+
+  describe('when GET /threads/{threadId}', () => {
+    it('should response 200 and get a thread', async () => {
+      // Arrange
+      const threadId = 'thread-123';
+      await UsersTableTestHelper.addUser({ id: 'user-123' });
+      await ThreadsTableTestHelper.addThread({ id: threadId, owner: 'user-123' });
+      const server = await createServer(container);
+
+      // Action
+      const response = await server.inject({
+        method: 'GET',
+        url: `/threads/${threadId}`,
+      });
+
+      // Assert
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(200);
+      expect(responseJson.status).toEqual('success');
+      expect(responseJson.data.thread).toBeDefined();
+      expect(responseJson.data.thread.id).toEqual(threadId);
+    });
+
+    it('should response 404 if the thread is not found', async () => {
+      // Arrange
+      const threadId = 'invalid-thread-id';
+      const server = await createServer(container);
+
+      // Action
+      const response = await server.inject({
+        method: 'GET',
+        url: `/threads/${threadId}`,
+      });
+
+      // Assert
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(404);
+      expect(responseJson.status).toEqual('fail');
+      expect(responseJson.message).toEqual('thread not found');
+    });
+  });
 });
