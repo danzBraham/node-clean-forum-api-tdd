@@ -23,7 +23,7 @@ describe('UserLogoutUseCase', () => {
     // Action & Assert
     await expect(userLogoutUseCase.execute(useCasePayload))
       .rejects
-      .toThrow('USER_LOGOUT_USE_CASE.PAYLOAD_MOT_MEET_DATA_TYPE_SPECIFICATION');
+      .toThrow('USER_LOGOUT_USE_CASE.PAYLOAD_NOT_MEET_DATA_TYPE_SPECIFICATION');
   });
 
   it('should orchestrating the delete authentication action correctly', async () => {

@@ -80,7 +80,7 @@ describe('/comments endpoint', () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(400);
       expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual('cannot create a new comment because the required properties are missing');
+      expect(responseJson.message).toEqual('cannot create a comment because the required properties are missing');
     });
 
     it('should response 400 if request payload not meet data type specification', async () => {
@@ -113,7 +113,7 @@ describe('/comments endpoint', () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(400);
       expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual('cannot create a new comment because the data type does not meet data type specification');
+      expect(responseJson.message).toEqual('cannot create a comment because the data type does not meet data type specification');
     });
 
     it('should response 404 if thread does not exist', async () => {

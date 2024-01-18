@@ -55,7 +55,7 @@ describe('/users endpoint', () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(400);
       expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual('cannot create a new user because the required properties are missing');
+      expect(responseJson.message).toEqual('cannot create a user because the required properties are missing');
     });
 
     it('should response 400 when request payload not meet data type specification', async () => {
@@ -78,7 +78,7 @@ describe('/users endpoint', () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(400);
       expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual('cannot create a new user because the data type does not meet data type specification');
+      expect(responseJson.message).toEqual('cannot create a user because the data type does not meet data type specification');
     });
 
     it('should response 400 when the username has more than 50 characters', async () => {
@@ -101,7 +101,7 @@ describe('/users endpoint', () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(400);
       expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual('cannot create a new user because the username character exceeds the limit');
+      expect(responseJson.message).toEqual('cannot create a user because the username character exceeds the limit');
     });
 
     it('should response 400 when the username contains a restricted character', async () => {
@@ -124,7 +124,7 @@ describe('/users endpoint', () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(400);
       expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual('cannot create a new user because the username contains a restricted character');
+      expect(responseJson.message).toEqual('cannot create a user because the username contains a restricted character');
     });
 
     it('should response 400 when the username not available', async () => {

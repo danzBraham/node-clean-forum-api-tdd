@@ -17,7 +17,7 @@ class UserLogoutUseCase {
     }
 
     if (typeof refreshToken !== 'string') {
-      throw new Error('USER_LOGOUT_USE_CASE.PAYLOAD_MOT_MEET_DATA_TYPE_SPECIFICATION');
+      throw new Error('USER_LOGOUT_USE_CASE.PAYLOAD_NOT_MEET_DATA_TYPE_SPECIFICATION');
     }
   }
 }
