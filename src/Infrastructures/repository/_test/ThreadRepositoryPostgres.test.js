@@ -1,8 +1,10 @@
 const NotFoundError = require('../../../Commons/NotFoundError');
 const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper');
 const ThreadsTableTestHelper = require('../../../../tests/ThreadsTableTestHelper');
+const CommentsTableTestHelper = require('../../../../tests/CommentsTableTestHelper');
 const AddThread = require('../../../Domains/threads/entities/AddThread');
 const AddedThread = require('../../../Domains/threads/entities/AddedThread');
+const GotThread = require('../../../Domains/threads/entities/GotThread');
 const pool = require('../../database/postgres/pool');
 const ThreadRepositoryPostgres = require('../ThreadRepositoryPostgres');
 
@@ -10,6 +12,7 @@ describe('ThreadRepositoryPostgres', () => {
   afterEach(async () => {
     await UsersTableTestHelper.cleanTable();
     await ThreadsTableTestHelper.cleanTable();
+    await CommentsTableTestHelper.cleanTable();
   });
 
   afterAll(async () => {
@@ -85,6 +88,72 @@ describe('ThreadRepositoryPostgres', () => {
       await expect(threadRepositoryPostgres.checkAvailabilityThread(threadId))
         .resolves
         .not.toThrow(NotFoundError);
+    });
+  });
+
+  describe('getThreadById function', () => {
+    it('should return get thread correctly', async () => {
+      // Arrange
+      const threadId = 'thread-123';
+      const fixedDate = new Date().toISOString();
+
+      const expectedGotThread = new GotThread({
+        id: 'thread-123',
+        title: 'My Thread',
+        body: 'Hello this is my Thread',
+        date: fixedDate,
+        username: 'danzbraham',
+        comments: [
+          {
+            id: 'comment-123',
+            username: 'luffy',
+            date: fixedDate,
+            content: 'first',
+          },
+          {
+            id: 'comment-456',
+            username: 'zoro',
+            date: fixedDate,
+            content: '**comment has been deleted**',
+          },
+        ],
+      });
+
+      const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
+
+      await UsersTableTestHelper.addUser({ id: 'user-123', username: 'danzbraham' });
+      await UsersTableTestHelper.addUser({ id: 'user-456', username: 'luffy' });
+      await UsersTableTestHelper.addUser({ id: 'user-789', username: 'zoro' });
+
+      await ThreadsTableTestHelper.addThread({
+        id: threadId,
+        title: 'My Thread',
+        body: 'Hello this is my Thread',
+        date: fixedDate,
+        owner: 'user-123',
+      });
+
+      await CommentsTableTestHelper.addComment({
+        id: 'comment-123',
+        threadId,
+        date: fixedDate,
+        content: 'first',
+        owner: 'user-456',
+      });
+      await CommentsTableTestHelper.addComment({
+        id: 'comment-456',
+        threadId,
+        date: fixedDate,
+        content: 'second',
+        owner: 'user-789',
+        isDeleted: true,
+      });
+
+      // Action
+      const gotThread = await threadRepositoryPostgres.getThreadById(threadId);
+
+      // Assert
+      expect(gotThread).toStrictEqual(expectedGotThread);
     });
   });
 });

@@ -5,3 +5,4 @@ pnpm-lock.yaml
 config/database/test.json
 coverage
 .env
+*.sql
