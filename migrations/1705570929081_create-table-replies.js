@@ -23,6 +23,11 @@ exports.up = (pgm) => {
       type: 'VARCHAR(50)',
       notNull: true,
     },
+    is_deleted: {
+      type: 'BOOLEAN',
+      notNull: true,
+      default: 'false',
+    },
   });
 
   pgm.addConstraint('replies', 'fk_replies.comment_id_comments.id', 'FOREIGN KEY(comment_id) REFERENCES comments(id) ON DELETE CASCADE');
@@ -30,7 +35,7 @@ exports.up = (pgm) => {
 };
 
 exports.down = (pgm) => {
-  pgm.dropConsraint('replies', 'fk_replies.owner_users.id');
-  pgm.dropConsraint('replies', 'fk_replies.comment_id_comments.id');
+  pgm.dropConstraint('replies', 'fk_replies.owner_users.id');
+  pgm.dropConstraint('replies', 'fk_replies.comment_id_comments.id');
   pgm.dropTable('replies');
 };
