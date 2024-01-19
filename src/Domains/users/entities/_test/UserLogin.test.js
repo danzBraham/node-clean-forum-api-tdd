@@ -1,7 +1,7 @@
 const UserLogin = require('../UserLogin');
 
 describe('UserLogin entity', () => {
-  it('should throw an error when the payload does not contain the required properties', () => {
+  it('should throw an error if the payload does not contain the required properties', () => {
     // Arrange
     const payload = {
       username: 'danzbraham',
@@ -11,7 +11,7 @@ describe('UserLogin entity', () => {
     expect(() => new UserLogin(payload)).toThrow('USER_LOGIN.NOT_CONTAIN_REQUIRED_PROPERTY');
   });
 
-  it('should throw an error when the payload does not meet the data type specification', () => {
+  it('should throw an error if the payload does not meet the data type specification', () => {
     // Arrange
     const payload = {
       username: 'danzbraham',

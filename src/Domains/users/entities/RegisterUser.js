@@ -3,7 +3,6 @@ class RegisterUser {
     this._verifyPayload(payload);
 
     const { username, password, fullname } = payload;
-
     this.username = username;
     this.password = password;
     this.fullname = fullname;

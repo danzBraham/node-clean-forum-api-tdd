@@ -1,8 +1,10 @@
 class NewAuth {
   constructor(payload) {
     this._verifyPayload(payload);
-    this.accessToken = payload.accessToken;
-    this.refreshToken = payload.refreshToken;
+
+    const { accessToken, refreshToken } = payload;
+    this.accessToken = accessToken;
+    this.refreshToken = refreshToken;
   }
 
   _verifyPayload({ accessToken, refreshToken }) {

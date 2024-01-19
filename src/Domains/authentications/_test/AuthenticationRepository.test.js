@@ -1,7 +1,7 @@
 const AuthenticationRepository = require('../AuthenticationRepository');
 
 describe('AuthenticationRepository interface', () => {
-  it('should throw an error when invoking abstract behavior', async () => {
+  it('should throw an error if invoking abstract behavior', async () => {
     // Arrange
     const authenticationRepository = new AuthenticationRepository();
 

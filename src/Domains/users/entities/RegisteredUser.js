@@ -3,7 +3,6 @@ class RegisteredUser {
     this._verifyPayload(payload);
 
     const { id, username, fullname } = payload;
-
     this.id = id;
     this.username = username;
     this.fullname = fullname;

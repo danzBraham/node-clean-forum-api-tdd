@@ -1,7 +1,7 @@
 const DeleteComment = require('../DeleteComment');
 
 describe('DeleteComment', () => {
-  it('should throw an error when the payload does not contain the required properties', () => {
+  it('should throw an error if the payload does not contain the required properties', () => {
     // Arrange
     const payload = {
       userId: 'user-123',
@@ -11,7 +11,7 @@ describe('DeleteComment', () => {
     expect(() => new DeleteComment(payload)).toThrow('DELETE_COMMENT.NOT_CONTAIN_REQUIRED_PROPERTY');
   });
 
-  it('should throw an error when the payload does not meet the data type specification', () => {
+  it('should throw an error if the payload does not meet the data type specification', () => {
     // Arrange
     const payload = {
       userId: 'user-123',

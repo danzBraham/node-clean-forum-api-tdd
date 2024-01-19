@@ -1,7 +1,7 @@
 const AddReply = require('../AddReply');
 
 describe('AddReply', () => {
-  it('should throw an error when the payload does not contain the required properties', () => {
+  it('should throw an error if the payload does not contain the required properties', () => {
     // Arrange
     const payload = {
       userId: 'user-123',
@@ -12,7 +12,7 @@ describe('AddReply', () => {
     expect(() => new AddReply(payload)).toThrow('ADD_REPLY.NOT_CONTAIN_REQUIRED_PROPERTY');
   });
 
-  it('should throw an error when the payload does not meet the data type specification', () => {
+  it('should throw an error if the payload does not meet the data type specification', () => {
     // Arrange
     const payload = {
       userId: 'user-123',
@@ -29,7 +29,7 @@ describe('AddReply', () => {
     const payload = {
       userId: 'user-123',
       commentId: 'comment-123',
-      content: 'Comment in thread',
+      content: 'Reply to a comment',
     };
 
     // Action

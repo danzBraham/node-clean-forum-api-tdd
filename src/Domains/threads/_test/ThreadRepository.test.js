@@ -1,7 +1,7 @@
 const ThreadRepository = require('../ThreadRepository');
 
 describe('ThreadRepository interface', () => {
-  it('should throw an error when invoking abstract behavior', async () => {
+  it('should throw an error if invoking abstract behavior', async () => {
     // Arrange
     const threadRepository = new ThreadRepository();
 

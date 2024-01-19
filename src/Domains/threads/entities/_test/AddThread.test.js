@@ -1,7 +1,7 @@
 const AddThread = require('../AddThread');
 
 describe('AddThread', () => {
-  it('should throw an error when the payload does not contain the required properties', () => {
+  it('should throw an error if the payload does not contain the required properties', () => {
     // Arrange
     const payload = {
       title: 'My Thread',
@@ -12,7 +12,7 @@ describe('AddThread', () => {
     expect(() => new AddThread(payload)).toThrow('ADD_THREAD.NOT_CONTAIN_REQUIRED_PROPERTY');
   });
 
-  it('should throw an error when the payload does not meet the data type specification', () => {
+  it('should throw an error if the payload does not meet the data type specification', () => {
     // Arrange
     const payload = {
       userId: 123,
