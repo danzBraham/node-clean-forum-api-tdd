@@ -18,8 +18,8 @@ DomainErrorTranslator._directories = {
   'REFRESH_AUTHENTICATION_USE_CASE.NOT_CONTAIN_REFRESH_TOKEN': new InvariantError('must provide a refresh token'),
   'REFRESH_AUTHENTICATION_USE_CASE.PAYLOAD_NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('refresh token must be a string'),
 
-  'USER_LOGOUT_USE_CASE.NOT_CONTAIN_REFRESH_TOKEN': new InvariantError('must provide a refresh token'),
-  'USER_LOGOUT_USE_CASE.PAYLOAD_NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('refresh token must be a string'),
+  'LOGOUT_USER_USE_CASE.NOT_CONTAIN_REFRESH_TOKEN': new InvariantError('must provide a refresh token'),
+  'LOGOUT_USER_USE_CASE.PAYLOAD_NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('refresh token must be a string'),
 
   'ADD_THREAD.NOT_CONTAIN_REQUIRED_PROPERTY': new InvariantError('cannot create a thread because the required properties are missing'),
   'ADD_THREAD.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('cannot create a thread because the data type does not meet data type specification'),

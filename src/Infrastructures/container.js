@@ -29,16 +29,20 @@ const PasswordHasher = require('../Applications/security/PasswordHasher');
 const AuthenticationTokenManager = require('../Applications/security/AuthenticationTokenManager');
 
 // app use cases
-const AddUserUseCase = require('../Applications/use_case/AddUserUseCase');
-const UserLoginUseCase = require('../Applications/use_case/UserLoginUseCase');
-const RefreshAuthenticationUseCase = require('../Applications/use_case/RefreshAuthenticationUseCase');
-const UserLogoutUseCase = require('../Applications/use_case/UserLogoutUseCase');
-const AddThreadUseCase = require('../Applications/use_case/AddThreadUseCase');
-const GetThreadByIdUseCase = require('../Applications/use_case/GetThreadByIdUseCase');
-const AddCommentUseCase = require('../Applications/use_case/AddCommentUseCase');
-const DeleteCommentUseCase = require('../Applications/use_case/DeleteCommentUseCase');
-const AddReplyUseCase = require('../Applications/use_case/AddReplyUseCase');
-const DeleteReplyUseCase = require('../Applications/use_case/DeleteReplyUseCase');
+const AddUserUseCase = require('../Applications/use_case/users/AddUserUseCase');
+
+const LoginUserUseCase = require('../Applications/use_case/authentications/LoginUserUseCase');
+const RefreshAuthenticationUseCase = require('../Applications/use_case/authentications/RefreshAuthenticationUseCase');
+const LogoutUserUseCase = require('../Applications/use_case/authentications/LogoutUserUseCase');
+
+const AddThreadUseCase = require('../Applications/use_case/threads/AddThreadUseCase');
+const GetThreadByIdUseCase = require('../Applications/use_case/threads/GetThreadByIdUseCase');
+
+const AddCommentUseCase = require('../Applications/use_case/comments/AddCommentUseCase');
+const DeleteCommentUseCase = require('../Applications/use_case/comments/DeleteCommentUseCase');
+
+const AddReplyUseCase = require('../Applications/use_case/replies/AddReplyUseCase');
+const DeleteReplyUseCase = require('../Applications/use_case/replies/DeleteReplyUseCase');
 
 // creating container
 const container = createContainer();
@@ -128,8 +132,8 @@ container.register([
     },
   },
   {
-    key: UserLoginUseCase.name,
-    Class: UserLoginUseCase,
+    key: LoginUserUseCase.name,
+    Class: LoginUserUseCase,
     parameter: {
       injectType: 'destructuring',
       dependencies: [
@@ -152,8 +156,8 @@ container.register([
     },
   },
   {
-    key: UserLogoutUseCase.name,
-    Class: UserLogoutUseCase,
+    key: LogoutUserUseCase.name,
+    Class: LogoutUserUseCase,
     parameter: {
       injectType: 'destructuring',
       dependencies: [

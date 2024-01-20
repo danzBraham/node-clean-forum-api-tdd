@@ -1,8 +1,8 @@
-const AddReply = require('../../../Domains/replies/entities/AddReply');
-const AddedReply = require('../../../Domains/replies/entities/AddedReply');
-const ThreadRepository = require('../../../Domains/threads/ThreadRepository');
-const CommentRepository = require('../../../Domains/comments/CommentRepository');
-const ReplyRepository = require('../../../Domains/replies/ReplyRepository');
+const AddReply = require('../../../../Domains/replies/entities/AddReply');
+const AddedReply = require('../../../../Domains/replies/entities/AddedReply');
+const ThreadRepository = require('../../../../Domains/threads/ThreadRepository');
+const CommentRepository = require('../../../../Domains/comments/CommentRepository');
+const ReplyRepository = require('../../../../Domains/replies/ReplyRepository');
 const AddReplyUseCase = require('../AddReplyUseCase');
 
 describe('AddReplyUseCase', () => {
@@ -27,7 +27,7 @@ describe('AddReplyUseCase', () => {
       owner: userId,
     });
 
-    // create dependency of use case
+    // creating dependency of use case
     const mockThreadRepository = new ThreadRepository();
     const mockCommentRepository = new CommentRepository();
     const mockReplyRepository = new ReplyRepository();
@@ -44,6 +44,7 @@ describe('AddReplyUseCase', () => {
         owner: 'user-123',
       })));
 
+    // creating use case instance
     const addReplyUseCase = new AddReplyUseCase({
       replyRepository: mockReplyRepository,
       commentRepository: mockCommentRepository,
@@ -55,8 +56,11 @@ describe('AddReplyUseCase', () => {
 
     // Assert
     expect(addedReply).toStrictEqual(expectedAddedReply);
-    expect(mockThreadRepository.checkAvailabilityThread).toHaveBeenCalledWith(threadId);
-    expect(mockCommentRepository.checkAvailabilityComment).toHaveBeenCalledWith(commentId);
-    expect(mockReplyRepository.addReply).toHaveBeenCalledWith(expectedReply);
+    expect(mockThreadRepository.checkAvailabilityThread)
+      .toHaveBeenCalledWith(threadId);
+    expect(mockCommentRepository.checkAvailabilityComment)
+      .toHaveBeenCalledWith(expectedReply.commentId);
+    expect(mockReplyRepository.addReply)
+      .toHaveBeenCalledWith(expectedReply);
   });
 });

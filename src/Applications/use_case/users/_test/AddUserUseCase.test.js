@@ -1,7 +1,7 @@
-const RegisterUser = require('../../../Domains/users/entities/RegisterUser');
-const RegisteredUser = require('../../../Domains/users/entities/RegisteredUser');
-const UserRepository = require('../../../Domains/users/UserRepository');
-const PasswordHasher = require('../../security/PasswordHasher');
+const RegisterUser = require('../../../../Domains/users/entities/RegisterUser');
+const RegisteredUser = require('../../../../Domains/users/entities/RegisteredUser');
+const UserRepository = require('../../../../Domains/users/UserRepository');
+const PasswordHasher = require('../../../security/PasswordHasher');
 const AddUserUseCase = require('../AddUserUseCase');
 
 describe('AddUserUseCase', () => {
@@ -12,11 +12,13 @@ describe('AddUserUseCase', () => {
       password: 'secret',
       fullname: 'Zidan Abraham',
     };
+
     const expectedRegisterUser = new RegisterUser({
       username: useCasePayload.username,
       password: 'hashed-password',
       fullname: useCasePayload.fullname,
     });
+
     const expectedRegisteredUser = new RegisteredUser({
       id: 'user-123',
       username: useCasePayload.username,
@@ -27,7 +29,7 @@ describe('AddUserUseCase', () => {
     const mockUserRepository = new UserRepository();
     const mockPasswordHasher = new PasswordHasher();
 
-    // mocking needed function
+    // mocking required function
     mockUserRepository.verifyAvailableUsername = jest.fn()
       .mockImplementation(() => Promise.resolve());
     mockPasswordHasher.hash = jest.fn()

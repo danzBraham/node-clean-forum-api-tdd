@@ -1,5 +1,5 @@
-const AuthenticationRepository = require('../../../Domains/authentications/AuthenticationRepository');
-const AuthenticationTokenManager = require('../../security/AuthenticationTokenManager');
+const AuthenticationRepository = require('../../../../Domains/authentications/AuthenticationRepository');
+const AuthenticationTokenManager = require('../../../security/AuthenticationTokenManager');
 const RefreshAuthenticationUseCase = require('../RefreshAuthenticationUseCase');
 
 describe('RefreshAuthenticationUseCase', () => {
@@ -38,6 +38,7 @@ describe('RefreshAuthenticationUseCase', () => {
     };
     const expectedNewAccessToken = 'new-access-token';
 
+    // creating dependency of use case
     const mockAuthenticationRepository = new AuthenticationRepository();
     const mockAuthenticationTokenManager = new AuthenticationTokenManager();
 
@@ -51,7 +52,7 @@ describe('RefreshAuthenticationUseCase', () => {
     mockAuthenticationTokenManager.createAccessToken = jest.fn()
       .mockImplementation(() => Promise.resolve('new-access-token'));
 
-    // create use case instance
+    // creating use case instance
     const refreshAuthenticationUseCase = new RefreshAuthenticationUseCase({
       authenticationRepository: mockAuthenticationRepository,
       authenticationTokenManager: mockAuthenticationTokenManager,
@@ -61,6 +62,7 @@ describe('RefreshAuthenticationUseCase', () => {
     const accessToken = await refreshAuthenticationUseCase.execute(useCasePayload);
 
     // Assert
+    expect(accessToken).toEqual(expectedNewAccessToken);
     expect(mockAuthenticationRepository.checkAvailabilityToken)
       .toHaveBeenCalledWith(useCasePayload.refreshToken);
     expect(mockAuthenticationTokenManager.verifyRefreshToken)
@@ -69,6 +71,5 @@ describe('RefreshAuthenticationUseCase', () => {
       .toHaveBeenCalledWith(useCasePayload.refreshToken);
     expect(mockAuthenticationTokenManager.createAccessToken)
       .toHaveBeenCalledWith(tokenPayload);
-    expect(accessToken).toEqual(expectedNewAccessToken);
   });
 });

@@ -1,7 +1,7 @@
-const AddComment = require('../../../Domains/comments/entities/AddComment');
-const AddedComment = require('../../../Domains/comments/entities/AddedComment');
-const ThreadRepository = require('../../../Domains/threads/ThreadRepository');
-const CommentRepository = require('../../../Domains/comments/CommentRepository');
+const AddComment = require('../../../../Domains/comments/entities/AddComment');
+const AddedComment = require('../../../../Domains/comments/entities/AddedComment');
+const ThreadRepository = require('../../../../Domains/threads/ThreadRepository');
+const CommentRepository = require('../../../../Domains/comments/CommentRepository');
 const AddCommentUseCase = require('../AddCommentUseCase');
 
 describe('AddCommentUseCase', () => {
@@ -12,18 +12,20 @@ describe('AddCommentUseCase', () => {
     const useCasePayload = {
       content: 'Hello this is my comment in Thread',
     };
+
     const expectedComment = new AddComment({
       userId,
       threadId,
       ...useCasePayload,
     });
+
     const expectedAddedComment = new AddedComment({
       id: 'comment-123',
       content: useCasePayload.content,
       owner: userId,
     });
 
-    // create dependency of use case
+    // creating dependency of use case
     const mockThreadRepository = new ThreadRepository();
     const mockCommentRepository = new CommentRepository();
 
@@ -37,6 +39,7 @@ describe('AddCommentUseCase', () => {
         owner: 'user-123',
       })));
 
+    // creating use case instance
     const addCommentUseCase = new AddCommentUseCase({
       commentRepository: mockCommentRepository,
       threadRepository: mockThreadRepository,

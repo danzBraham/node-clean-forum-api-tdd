@@ -1,6 +1,6 @@
-const UserLoginUseCase = require('../../../../Applications/use_case/UserLoginUseCase');
-const RefreshAuthenticationUseCase = require('../../../../Applications/use_case/RefreshAuthenticationUseCase');
-const UserLogoutUseCase = require('../../../../Applications/use_case/UserLogoutUseCase');
+const LoginUserUseCase = require('../../../../Applications/use_case/authentications/LoginUserUseCase');
+const RefreshAuthenticationUseCase = require('../../../../Applications/use_case/authentications/RefreshAuthenticationUseCase');
+const LogoutUserUseCase = require('../../../../Applications/use_case/authentications/LogoutUserUseCase');
 
 class AuthenticationsHandler {
   constructor(container) {
@@ -11,8 +11,8 @@ class AuthenticationsHandler {
   }
 
   async postAuthenticationHandler(request, h) {
-    const userLoginUseCase = this._container.getInstance(UserLoginUseCase.name);
-    const { accessToken, refreshToken } = await userLoginUseCase.execute(request.payload);
+    const loginUserUseCase = this._container.getInstance(LoginUserUseCase.name);
+    const { accessToken, refreshToken } = await loginUserUseCase.execute(request.payload);
 
     const response = h.response({
       status: 'success',
@@ -36,8 +36,8 @@ class AuthenticationsHandler {
   }
 
   async deleteAuthenticationHandler(request, h) {
-    const userLogoutUseCase = this._container.getInstance(UserLogoutUseCase.name);
-    await userLogoutUseCase.execute(request.payload);
+    const logoutUserUseCase = this._container.getInstance(LogoutUserUseCase.name);
+    await logoutUserUseCase.execute(request.payload);
 
     const response = h.response({
       status: 'success',

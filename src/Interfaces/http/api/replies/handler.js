@@ -1,5 +1,5 @@
-const AddReplyUseCase = require('../../../../Applications/use_case/AddReplyUseCase');
-const DeleteReplyUseCase = require('../../../../Applications/use_case/DeleteReplyUseCase');
+const AddReplyUseCase = require('../../../../Applications/use_case/replies/AddReplyUseCase');
+const DeleteReplyUseCase = require('../../../../Applications/use_case/replies/DeleteReplyUseCase');
 
 class RepliesHandler {
   constructor(container) {

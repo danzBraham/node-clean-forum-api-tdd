@@ -1,4 +1,4 @@
-const DeleteReply = require('../../Domains/replies/entities/DeleteReply');
+const DeleteReply = require('../../../Domains/replies/entities/DeleteReply');
 
 class DeleteReplyUseCase {
   constructor({ replyRepository, commentRepository, threadRepository }) {

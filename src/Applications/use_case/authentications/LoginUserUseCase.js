@@ -1,12 +1,9 @@
-const UserLogin = require('../../Domains/users/entities/UserLogin');
-const NewAuth = require('../../Domains/authentications/entities/NewAuth');
+const LoginUser = require('../../../Domains/users/entities/LoginUser');
+const NewAuth = require('../../../Domains/authentications/entities/NewAuth');
 
-class UserLoginUseCase {
+class LoginUserUseCase {
   constructor({
-    userRepository,
-    authenticationRepository,
-    authenticationTokenManager,
-    passwordHasher,
+    userRepository, authenticationRepository, authenticationTokenManager, passwordHasher,
   }) {
     this._userRepository = userRepository;
     this._authenticationRepository = authenticationRepository;
@@ -15,13 +12,14 @@ class UserLoginUseCase {
   }
 
   async execute(useCasePayload) {
-    const { username, password } = new UserLogin(useCasePayload);
+    const { username, password } = new LoginUser(useCasePayload);
 
     const encryptedPassword = await this._userRepository.getPasswordByUsername(username);
     await this._passwordHasher.compare(password, encryptedPassword);
-    const id = await this._userRepository.getIdByUsername(username);
 
+    const id = await this._userRepository.getIdByUsername(username);
     const payload = { id, username };
+
     const accessToken = await this._authenticationTokenManager.createAccessToken(payload);
     const refreshToken = await this._authenticationTokenManager.createRefreshToken(payload);
 
@@ -32,4 +30,4 @@ class UserLoginUseCase {
   }
 }
 
-module.exports = UserLoginUseCase;
+module.exports = LoginUserUseCase;

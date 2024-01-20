@@ -1,6 +1,6 @@
-const UserLogin = require('../UserLogin');
+const LoginUser = require('../LoginUser');
 
-describe('UserLogin entity', () => {
+describe('LoginUser entity', () => {
   it('should throw an error if the payload does not contain the required properties', () => {
     // Arrange
     const payload = {
@@ -8,7 +8,7 @@ describe('UserLogin entity', () => {
     };
 
     // Action and Assert
-    expect(() => new UserLogin(payload)).toThrow('USER_LOGIN.NOT_CONTAIN_REQUIRED_PROPERTY');
+    expect(() => new LoginUser(payload)).toThrow('USER_LOGIN.NOT_CONTAIN_REQUIRED_PROPERTY');
   });
 
   it('should throw an error if the payload does not meet the data type specification', () => {
@@ -19,10 +19,10 @@ describe('UserLogin entity', () => {
     };
 
     // Action and Assert
-    expect(() => new UserLogin(payload)).toThrow('USER_LOGIN.NOT_MEET_DATA_TYPE_SPECIFICATION');
+    expect(() => new LoginUser(payload)).toThrow('USER_LOGIN.NOT_MEET_DATA_TYPE_SPECIFICATION');
   });
 
-  it('should create UserLogin entity correctly', () => {
+  it('should create LoginUser entity correctly', () => {
     // Arrange
     const payload = {
       username: 'danzbraham',
@@ -31,11 +31,11 @@ describe('UserLogin entity', () => {
 
     // Action
 
-    const userLogin = new UserLogin(payload);
+    const loginUser = new LoginUser(payload);
 
     // Assert
-    expect(userLogin).toBeInstanceOf(UserLogin);
-    expect(userLogin.username).toEqual(payload.username);
-    expect(userLogin.password).toEqual(payload.password);
+    expect(loginUser).toBeInstanceOf(LoginUser);
+    expect(loginUser.username).toEqual(payload.username);
+    expect(loginUser.password).toEqual(payload.password);
   });
 });

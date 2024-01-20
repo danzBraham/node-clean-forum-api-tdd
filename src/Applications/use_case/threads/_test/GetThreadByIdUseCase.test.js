@@ -1,5 +1,5 @@
-const GotThread = require('../../../Domains/threads/entities/GotThread');
-const ThreadRepository = require('../../../Domains/threads/ThreadRepository');
+const GotThread = require('../../../../Domains/threads/entities/GotThread');
+const ThreadRepository = require('../../../../Domains/threads/ThreadRepository');
 const GetThreadByIdUseCase = require('../GetThreadByIdUseCase');
 
 describe('GetThreadByIdUseCase', () => {
@@ -14,14 +14,14 @@ describe('GetThreadByIdUseCase', () => {
       date: '2024-01-17T05:57:56.392Z',
       username: 'danzbraham',
       comments: [{
-        id: 'comment-_pby2_tmXV6bcvcdev8xk',
-        username: 'johndoe',
-        date: '2021-08-08T07:22:33.555Z',
-        content: 'sebuah comment',
+        id: 'comment-123',
+        username: 'abra',
+        date: '2024-01-20T03:53:19.329Z',
+        content: 'a comment',
       }],
     });
 
-    // create dependency of use case
+    // creating dependency of use case
     const mockThreadRepository = new ThreadRepository();
 
     // mocking required function
@@ -29,19 +29,20 @@ describe('GetThreadByIdUseCase', () => {
       .mockImplementation(() => Promise.resolve());
     mockThreadRepository.getThreadById = jest.fn()
       .mockImplementation(() => Promise.resolve(new GotThread({
-        id: threadId,
+        id: 'thread-123',
         title: 'My Thread',
         body: 'Hello this is my Thread',
         date: '2024-01-17T05:57:56.392Z',
         username: 'danzbraham',
         comments: [{
-          id: 'comment-_pby2_tmXV6bcvcdev8xk',
-          username: 'johndoe',
-          date: '2021-08-08T07:22:33.555Z',
-          content: 'sebuah comment',
+          id: 'comment-123',
+          username: 'abra',
+          date: '2024-01-20T03:53:19.329Z',
+          content: 'a comment',
         }],
       })));
 
+    // creating use case instance
     const getThreadByIdUseCase = new GetThreadByIdUseCase({
       threadRepository: mockThreadRepository,
     });

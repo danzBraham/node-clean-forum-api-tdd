@@ -19,9 +19,9 @@ describe('DomainErrorTranslator', () => {
       .toStrictEqual(new InvariantError('must provide a refresh token'));
     expect(DomainErrorTranslator.translate(new Error('REFRESH_AUTHENTICATION_USE_CASE.PAYLOAD_NOT_MEET_DATA_TYPE_SPECIFICATION')))
       .toStrictEqual(new InvariantError('refresh token must be a string'));
-    expect(DomainErrorTranslator.translate(new Error('USER_LOGOUT_USE_CASE.NOT_CONTAIN_REFRESH_TOKEN')))
+    expect(DomainErrorTranslator.translate(new Error('LOGOUT_USER_USE_CASE.NOT_CONTAIN_REFRESH_TOKEN')))
       .toStrictEqual(new InvariantError('must provide a refresh token'));
-    expect(DomainErrorTranslator.translate(new Error('USER_LOGOUT_USE_CASE.PAYLOAD_NOT_MEET_DATA_TYPE_SPECIFICATION')))
+    expect(DomainErrorTranslator.translate(new Error('LOGOUT_USER_USE_CASE.PAYLOAD_NOT_MEET_DATA_TYPE_SPECIFICATION')))
       .toStrictEqual(new InvariantError('refresh token must be a string'));
     expect(DomainErrorTranslator.translate(new Error('ADD_THREAD.NOT_CONTAIN_REQUIRED_PROPERTY')))
       .toStrictEqual(new InvariantError('cannot create a thread because the required properties are missing'));

@@ -1,27 +1,30 @@
-const UserLogin = require('../../../Domains/users/entities/UserLogin');
-const NewAuth = require('../../../Domains/authentications/entities/NewAuth');
-const UserRepository = require('../../../Domains/users/UserRepository');
-const AuthenticationRepository = require('../../../Domains/authentications/AuthenticationRepository');
-const AuthenticationTokenManager = require('../../security/AuthenticationTokenManager');
-const PasswordHasher = require('../../security/PasswordHasher');
-const UserLoginUseCase = require('../UserLoginUseCase');
+const UserLogin = require('../../../../Domains/users/entities/LoginUser');
+const NewAuth = require('../../../../Domains/authentications/entities/NewAuth');
+const UserRepository = require('../../../../Domains/users/UserRepository');
+const AuthenticationRepository = require('../../../../Domains/authentications/AuthenticationRepository');
+const AuthenticationTokenManager = require('../../../security/AuthenticationTokenManager');
+const PasswordHasher = require('../../../security/PasswordHasher');
+const LoginUserUseCase = require('../LoginUserUseCase');
 
-describe('UserLoginUseCase', () => {
+describe('LoginUserUseCase', () => {
   it('should orchestrating the get authentication action correctly', async () => {
     // Arrange
     const useCasePayload = new UserLogin({
       username: 'danzbraham',
       password: 'secret',
     });
+
     const tokenPayload = {
       id: 'user-123',
       username: 'danzbraham',
     };
+
     const expectedNewAuth = new NewAuth({
       accessToken: 'access-token',
       refreshToken: 'refresh-token',
     });
 
+    // creating dependency of use case
     const mockUserRepository = new UserRepository();
     const mockAuthenticationRepository = new AuthenticationRepository();
     const mockAuthenticationTokenManager = new AuthenticationTokenManager();
@@ -41,8 +44,8 @@ describe('UserLoginUseCase', () => {
     mockAuthenticationRepository.addToken = jest.fn()
       .mockImplementation(() => Promise.resolve());
 
-    // create use case instance
-    const userLoginUseCase = new UserLoginUseCase({
+    // creating use case instance
+    const loginUserUseCase = new LoginUserUseCase({
       userRepository: mockUserRepository,
       authenticationRepository: mockAuthenticationRepository,
       authenticationTokenManager: mockAuthenticationTokenManager,
@@ -50,7 +53,7 @@ describe('UserLoginUseCase', () => {
     });
 
     // Action
-    const actualAuthentication = await userLoginUseCase.execute(useCasePayload);
+    const actualAuthentication = await loginUserUseCase.execute(useCasePayload);
 
     // Assert
     expect(actualAuthentication).toStrictEqual(expectedNewAuth);

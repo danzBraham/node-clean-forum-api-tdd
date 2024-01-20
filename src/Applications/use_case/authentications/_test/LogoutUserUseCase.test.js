@@ -1,16 +1,16 @@
-const AuthenticationRepository = require('../../../Domains/authentications/AuthenticationRepository');
-const UserLogoutUseCase = require('../UserLogoutUseCase');
+const AuthenticationRepository = require('../../../../Domains/authentications/AuthenticationRepository');
+const LogoutUserUseCase = require('../LogoutUserUseCase');
 
-describe('UserLogoutUseCase', () => {
+describe('LogoutUserUseCase', () => {
   it('should throw an error if the use case payload does not contain a refresh token', async () => {
     // Arrange
     const useCasePayload = {};
-    const userLogoutUseCase = new UserLogoutUseCase({});
+    const logoutUserUseCase = new LogoutUserUseCase({});
 
     // Action & Assert
-    await expect(userLogoutUseCase.execute(useCasePayload))
+    await expect(logoutUserUseCase.execute(useCasePayload))
       .rejects
-      .toThrow('USER_LOGOUT_USE_CASE.NOT_CONTAIN_REFRESH_TOKEN');
+      .toThrow('LOGOUT_USER_USE_CASE.NOT_CONTAIN_REFRESH_TOKEN');
   });
 
   it('should throw an error if the refresh token is not a string', async () => {
@@ -18,12 +18,12 @@ describe('UserLogoutUseCase', () => {
     const useCasePayload = {
       refreshToken: [true],
     };
-    const userLogoutUseCase = new UserLogoutUseCase({});
+    const logoutUserUseCase = new LogoutUserUseCase({});
 
     // Action & Assert
-    await expect(userLogoutUseCase.execute(useCasePayload))
+    await expect(logoutUserUseCase.execute(useCasePayload))
       .rejects
-      .toThrow('USER_LOGOUT_USE_CASE.PAYLOAD_NOT_MEET_DATA_TYPE_SPECIFICATION');
+      .toThrow('LOGOUT_USER_USE_CASE.PAYLOAD_NOT_MEET_DATA_TYPE_SPECIFICATION');
   });
 
   it('should orchestrating the delete authentication action correctly', async () => {
@@ -31,6 +31,8 @@ describe('UserLogoutUseCase', () => {
     const useCasePayload = {
       refreshToken: 'refresh-token',
     };
+
+    // creating dependency of use case
     const mockAuthenticationRepository = new AuthenticationRepository();
 
     // mocking required function
@@ -39,13 +41,13 @@ describe('UserLogoutUseCase', () => {
     mockAuthenticationRepository.deleteToken = jest.fn()
       .mockImplementation(() => Promise.resolve());
 
-    // create use case instance
-    const userLogoutUseCase = new UserLogoutUseCase({
+    // creating use case instance
+    const logoutUserUseCase = new LogoutUserUseCase({
       authenticationRepository: mockAuthenticationRepository,
     });
 
     // Action
-    await userLogoutUseCase.execute(useCasePayload);
+    await logoutUserUseCase.execute(useCasePayload);
 
     // Assert
     expect(mockAuthenticationRepository.checkAvailabilityToken)

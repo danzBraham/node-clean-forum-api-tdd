@@ -1,4 +1,4 @@
-const GotThread = require('../../Domains/threads/entities/GotThread');
+const GotThread = require('../../../Domains/threads/entities/GotThread');
 
 class GetThreadByIdUseCase {
   constructor({ threadRepository }) {

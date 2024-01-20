@@ -1,6 +1,6 @@
-const AddThread = require('../../../Domains/threads/entities/AddThread');
-const AddedThread = require('../../../Domains/threads/entities/AddedThread');
-const ThreadRepository = require('../../../Domains/threads/ThreadRepository');
+const AddThread = require('../../../../Domains/threads/entities/AddThread');
+const AddedThread = require('../../../../Domains/threads/entities/AddedThread');
+const ThreadRepository = require('../../../../Domains/threads/ThreadRepository');
 const AddThreadUseCase = require('../AddThreadUseCase');
 
 describe('AddThreadUseCase', () => {
@@ -9,19 +9,21 @@ describe('AddThreadUseCase', () => {
     const userId = 'user-123';
     const useCasePayload = {
       title: 'My Thread',
-      body: 'Hello this is my Thread',
+      body: 'Hello, this is my Thread',
     };
+
     const expectedThread = new AddThread({
       userId,
       ...useCasePayload,
     });
+
     const expectedAddedThread = new AddedThread({
       id: 'thread-123',
       title: useCasePayload.title,
       owner: userId,
     });
 
-    // create dependency of use case
+    // creating dependency of use case
     const mockThreadRepository = new ThreadRepository();
 
     // mocking required function
@@ -32,6 +34,7 @@ describe('AddThreadUseCase', () => {
         owner: 'user-123',
       })));
 
+    // creating use case instance
     const addThreadUseCase = new AddThreadUseCase({
       threadRepository: mockThreadRepository,
     });
