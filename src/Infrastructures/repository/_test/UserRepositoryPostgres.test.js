@@ -1,5 +1,5 @@
-const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper');
 const InvariantError = require('../../../Commons/InvariantError');
+const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper');
 const RegisterUser = require('../../../Domains/users/entities/RegisterUser');
 const RegisteredUser = require('../../../Domains/users/entities/RegisteredUser');
 const pool = require('../../database/postgres/pool');
@@ -15,32 +15,37 @@ describe('UserRepositoryPostgres', () => {
   });
 
   describe('verifyAvailableUsername function', () => {
-    it('should throw InvariantError when username not available', async () => {
+    it('should throw an InvariantError if the username is unavailable', async () => {
       // Arrange
       await UsersTableTestHelper.addUser({ username: 'danzbraham' });
       const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
 
       // Action and Assert
-      await expect(userRepositoryPostgres.verifyAvailableUsername('danzbraham')).rejects.toThrow(InvariantError);
+      await expect(userRepositoryPostgres.verifyAvailableUsername('danzbraham'))
+        .rejects
+        .toThrow(InvariantError);
     });
 
-    it('should not throw InvariantError when username available', async () => {
+    it('should not throw an InvariantError if the username is available', async () => {
       // Arrange
       const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
 
       // Action and Assert
-      await expect(userRepositoryPostgres.verifyAvailableUsername('danzbraham')).resolves.not.toThrow(InvariantError);
+      await expect(userRepositoryPostgres.verifyAvailableUsername('danzbraham'))
+        .resolves
+        .not.toThrow(InvariantError);
     });
   });
 
   describe('addUser function', () => {
-    it('should persist register user', async () => {
+    it('should persist a new user in the database correctly', async () => {
       // Arrange
       const registerUser = new RegisterUser({
         username: 'danzbraham',
         password: 'secret',
         fullname: 'Zidan Abraham',
       });
+
       const fakeIdGenerator = () => '123';
       const userRepositoryPostgres = new UserRepositoryPostgres(pool, fakeIdGenerator);
 
@@ -59,6 +64,13 @@ describe('UserRepositoryPostgres', () => {
         password: 'secret',
         fullname: 'Zidan Abraham',
       });
+
+      const expectedRegisteredUser = new RegisteredUser({
+        id: 'user-123',
+        username: registerUser.username,
+        fullname: registerUser.fullname,
+      });
+
       const fakeIdGenerator = () => '123';
       const userRepositoryPostgres = new UserRepositoryPostgres(pool, fakeIdGenerator);
 
@@ -66,24 +78,22 @@ describe('UserRepositoryPostgres', () => {
       const registeredUser = await userRepositoryPostgres.addUser(registerUser);
 
       // Assert
-      expect(registeredUser).toStrictEqual(new RegisteredUser({
-        id: 'user-123',
-        username: 'danzbraham',
-        fullname: 'Zidan Abraham',
-      }));
+      expect(registeredUser).toStrictEqual(expectedRegisteredUser);
     });
   });
 
   describe('getIdByUsername function', () => {
-    it('should throw an InvariantError when the user is not found', async () => {
+    it('should throw an InvariantError if the user does not exist', async () => {
       // Arrange
       const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
 
       // Action & Assert
-      await expect(userRepositoryPostgres.getIdByUsername('danzbraham')).rejects.toThrow(InvariantError);
+      await expect(userRepositoryPostgres.getIdByUsername('danzbraham'))
+        .rejects
+        .toThrow(InvariantError);
     });
 
-    it('should return user id correctly', async () => {
+    it('should return the correct user ID if the user exists', async () => {
       // Arrange
       await UsersTableTestHelper.addUser({ id: 'user-123', username: 'danzbraham' });
       const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
@@ -97,15 +107,17 @@ describe('UserRepositoryPostgres', () => {
   });
 
   describe('getPasswordByUsername function', () => {
-    it('should throw an InvariantError when the user is not found', async () => {
+    it('should throw an InvariantError if the user does not exist', async () => {
       // Arrange
       const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
 
       // Action & Assert
-      await expect(userRepositoryPostgres.getPasswordByUsername('danzbraham')).rejects.toThrow(InvariantError);
+      await expect(userRepositoryPostgres.getPasswordByUsername('danzbraham'))
+        .rejects
+        .toThrow(InvariantError);
     });
 
-    it('should return user password correctly', async () => {
+    it('should return the correct user password if the user exists', async () => {
       // Arrange
       await UsersTableTestHelper.addUser({ username: 'danzbraham', password: 'secret' });
       const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});

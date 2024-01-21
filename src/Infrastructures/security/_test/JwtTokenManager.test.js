@@ -10,16 +10,18 @@ describe('JwtTokenManager', () => {
         id: 'user-123',
         username: 'danzbraham',
       };
+
       const mockJwtToken = {
-        generate: jest.fn().mockImplementation(() => Promise.resolve('mock-access-token')),
+        generate: jest.fn().mockImplementation(() => Promise.resolve('access-token')),
       };
+
       const jwtTokenManager = new JwtTokenManager(mockJwtToken);
 
       // Action
       const accessToken = await jwtTokenManager.createAccessToken(payload);
 
       // Assert
-      expect(accessToken).toEqual('mock-access-token');
+      expect(accessToken).toEqual('access-token');
       expect(mockJwtToken.generate).toHaveBeenCalledWith(payload, process.env.ACCESS_TOKEN_KEY);
     });
   });
@@ -31,22 +33,24 @@ describe('JwtTokenManager', () => {
         id: 'user-123',
         username: 'danzbraham',
       };
+
       const mockJwtToken = {
-        generate: jest.fn().mockImplementation(() => Promise.resolve('mock-refresh-token')),
+        generate: jest.fn().mockImplementation(() => Promise.resolve('refresh-token')),
       };
+
       const jwtTokenManager = new JwtTokenManager(mockJwtToken);
 
       // Action
       const refreshToken = await jwtTokenManager.createRefreshToken(payload);
 
       // Assert
-      expect(refreshToken).toEqual('mock-refresh-token');
+      expect(refreshToken).toEqual('refresh-token');
       expect(mockJwtToken.generate).toHaveBeenCalledWith(payload, process.env.REFRESH_TOKEN_KEY);
     });
   });
 
   describe('verifyRefreshToken function', () => {
-    it('should throw an InvariantError when refresh token is invalid', async () => {
+    it('should throw an InvariantError if the refresh token is invalid', async () => {
       // Arrange
       const spyDecode = jest.spyOn(Jwt.token, 'decode');
       const jwtTokenManager = new JwtTokenManager(Jwt.token);
@@ -59,16 +63,19 @@ describe('JwtTokenManager', () => {
       expect(spyDecode).toHaveBeenCalledWith(refreshToken);
     });
 
-    it('should not throw an InvariantError when refresh token is valid', async () => {
+    it('should not throw an InvariantError if the refresh token is valid', async () => {
       // Arrange
       const payload = {
         id: 'user-123',
         username: 'danzbraham',
       };
+
       const spyDecode = jest.spyOn(Jwt.token, 'decode');
       const spyVerify = jest.spyOn(Jwt.token, 'verify');
+
       const jwtTokenManager = new JwtTokenManager(Jwt.token);
       const refreshToken = await jwtTokenManager.createRefreshToken(payload);
+
       const artifacts = Jwt.token.decode(refreshToken);
 
       // Action & Assert
@@ -87,6 +94,7 @@ describe('JwtTokenManager', () => {
         id: 'user-123',
         username: 'danzbraham',
       };
+
       const spyDecode = jest.spyOn(Jwt.token, 'decode');
       const jwtTokenManager = new JwtTokenManager(Jwt.token);
       const accessToken = await jwtTokenManager.createAccessToken(payload);

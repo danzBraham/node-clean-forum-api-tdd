@@ -21,6 +21,7 @@ describe('HTTP Server', () => {
       password: 'secret',
       fullname: 'Zidan Abraham',
     };
+
     const server = await createServer({});
 
     // Action

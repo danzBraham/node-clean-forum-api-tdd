@@ -1,9 +1,9 @@
-const pool = require('../../database/postgres/pool');
 const ServerTestHelper = require('../../../../tests/ServerTestHelper');
 const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper');
 const ThreadsTableTestHelper = require('../../../../tests/ThreadsTableTestHelper');
 const CommentsTableTestHelper = require('../../../../tests/CommentsTableTestHelper');
 const RepliesTableTestHelper = require('../../../../tests/RepliesTableTestHelper');
+const pool = require('../../database/postgres/pool');
 const container = require('../../container');
 const createServer = require('../createServer');
 
@@ -20,24 +20,20 @@ describe('/replies endpoint', () => {
   });
 
   describe('when POST /threads/{threadId}/comments/{commentId}/replies', () => {
-    it('should response 201 and persist reply', async () => {
+    it('should response 201 and persist the reply', async () => {
       // Arrange
+      const userId = 'user-123';
+      const threadId = 'thread-123';
+      const commentId = 'comment-123';
+
       const requestPayload = {
         content: 'Hello this is my comment in Thread',
       };
 
-      const userPayload = {
-        id: 'user-123',
-        username: 'danzbraham',
-      };
-
-      const threadId = 'thread-123';
-      const commentId = 'comment-123';
-
-      await UsersTableTestHelper.addUser(userPayload);
-      const accessToken = await ServerTestHelper.getAccessToken(userPayload);
-      await ThreadsTableTestHelper.addThread({ id: threadId, owner: userPayload.id });
-      await CommentsTableTestHelper.addComment({ id: commentId, owner: userPayload.id });
+      await UsersTableTestHelper.addUser({ id: userId, username: 'danzbraham' });
+      const accessToken = await ServerTestHelper.getAccessToken({ id: userId, username: 'danzbraham' });
+      await ThreadsTableTestHelper.addThread({ id: threadId, owner: userId });
+      await CommentsTableTestHelper.addComment({ id: commentId, threadId, owner: userId });
 
       const server = await createServer(container);
 
@@ -59,22 +55,18 @@ describe('/replies endpoint', () => {
       expect(responseJson.data.addedReply.content).toEqual(requestPayload.content);
     });
 
-    it('should response 400 if request payload not contain required property', async () => {
+    it('should response 400 when the request payload not contain required property', async () => {
       // Arrange
-      const requestPayload = {};
-
-      const userPayload = {
-        id: 'user-123',
-        username: 'danzbraham',
-      };
-
+      const userId = 'user-123';
       const threadId = 'thread-123';
       const commentId = 'comment-123';
 
-      await UsersTableTestHelper.addUser(userPayload);
-      const accessToken = await ServerTestHelper.getAccessToken(userPayload);
-      await ThreadsTableTestHelper.addThread({ id: threadId, owner: userPayload.id });
-      await CommentsTableTestHelper.addComment({ id: commentId, owner: userPayload.id });
+      const requestPayload = {};
+
+      await UsersTableTestHelper.addUser({ id: userId, username: 'danzbraham' });
+      const accessToken = await ServerTestHelper.getAccessToken({ id: userId, username: 'danzbraham' });
+      await ThreadsTableTestHelper.addThread({ id: threadId, owner: userId });
+      await CommentsTableTestHelper.addComment({ id: commentId, threadId, owner: userId });
 
       const server = await createServer(container);
 
@@ -95,24 +87,20 @@ describe('/replies endpoint', () => {
       expect(responseJson.message).toEqual('cannot create a reply because the required properties are missing');
     });
 
-    it('should response 400 if request payload not meet data type specification', async () => {
+    it('should response 400 when the request payload not meet data type specification', async () => {
       // Arrange
+      const userId = 'user-123';
+      const threadId = 'thread-123';
+      const commentId = 'comment-123';
+
       const requestPayload = {
         content: 123,
       };
 
-      const userPayload = {
-        id: 'user-123',
-        username: 'danzbraham',
-      };
-
-      const threadId = 'thread-123';
-      const commentId = 'comment-123';
-
-      await UsersTableTestHelper.addUser(userPayload);
-      const accessToken = await ServerTestHelper.getAccessToken(userPayload);
-      await ThreadsTableTestHelper.addThread({ id: threadId, owner: userPayload.id });
-      await CommentsTableTestHelper.addComment({ id: commentId, owner: userPayload.id });
+      await UsersTableTestHelper.addUser({ id: userId, username: 'danzbraham' });
+      const accessToken = await ServerTestHelper.getAccessToken({ id: userId, username: 'danzbraham' });
+      await ThreadsTableTestHelper.addThread({ id: threadId, owner: userId });
+      await CommentsTableTestHelper.addComment({ id: commentId, threadId, owner: userId });
 
       const server = await createServer(container);
 
@@ -133,59 +121,19 @@ describe('/replies endpoint', () => {
       expect(responseJson.message).toEqual('cannot create a reply because the data type does not meet data type specification');
     });
 
-    it('should response 404 if thread does not exist', async () => {
+    it('should response 404 when the comment does not exist', async () => {
       // Arrange
-      const requestPayload = {
-        content: 'Reply to a comment',
-      };
-
-      const userPayload = {
-        id: 'user-123',
-        username: 'danzbraham',
-      };
-
+      const userId = 'user-123';
       const threadId = 'thread-123';
       const commentId = 'comment-123';
 
-      await UsersTableTestHelper.addUser(userPayload);
-      const accessToken = await ServerTestHelper.getAccessToken(userPayload);
-
-      const server = await createServer(container);
-
-      // Action
-      const response = await server.inject({
-        method: 'POST',
-        url: `/threads/${threadId}/comments/${commentId}/replies`,
-        headers: {
-          authorization: `Bearer ${accessToken}`,
-        },
-        payload: requestPayload,
-      });
-
-      // Assert
-      const responseJson = JSON.parse(response.payload);
-      expect(response.statusCode).toEqual(404);
-      expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual('thread not found');
-    });
-
-    it('should response 404 if comment does not exist', async () => {
-      // Arrange
       const requestPayload = {
-        content: 'Reply to a comment',
+        content: 'Hello this is my comment in Thread',
       };
 
-      const userPayload = {
-        id: 'user-123',
-        username: 'danzbraham',
-      };
-
-      const threadId = 'thread-123';
-      const commentId = 'comment-123';
-
-      await UsersTableTestHelper.addUser(userPayload);
-      const accessToken = await ServerTestHelper.getAccessToken(userPayload);
-      await ThreadsTableTestHelper.addThread({ id: threadId, owner: userPayload.id });
+      await UsersTableTestHelper.addUser({ id: userId, username: 'danzbraham' });
+      const accessToken = await ServerTestHelper.getAccessToken({ id: userId, username: 'danzbraham' });
+      await ThreadsTableTestHelper.addThread({ id: threadId, owner: userId });
 
       const server = await createServer(container);
 
@@ -205,10 +153,42 @@ describe('/replies endpoint', () => {
       expect(responseJson.status).toEqual('fail');
       expect(responseJson.message).toEqual('comment not found');
     });
+
+    it('should response 404 when the thread does not exist', async () => {
+      // Arrange
+      const userId = 'user-123';
+      const threadId = 'thread-123';
+      const commentId = 'comment-123';
+
+      const requestPayload = {
+        content: 'Hello this is my comment in Thread',
+      };
+
+      await UsersTableTestHelper.addUser({ id: userId, username: 'danzbraham' });
+      const accessToken = await ServerTestHelper.getAccessToken({ id: userId, username: 'danzbraham' });
+
+      const server = await createServer(container);
+
+      // Action
+      const response = await server.inject({
+        method: 'POST',
+        url: `/threads/${threadId}/comments/${commentId}/replies`,
+        headers: {
+          authorization: `Bearer ${accessToken}`,
+        },
+        payload: requestPayload,
+      });
+
+      // Assert
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(404);
+      expect(responseJson.status).toEqual('fail');
+      expect(responseJson.message).toEqual('thread not found');
+    });
   });
 
   describe('when DELETE /threads/{threadId}/comments/{commentId}/replies/{replyId}', () => {
-    it('should response 200 and delete reply', async () => {
+    it('should response 200 and delete the reply correctly', async () => {
       // Arrange
       const userId = 'user-123';
       const threadId = 'thread-123';
@@ -238,21 +218,20 @@ describe('/replies endpoint', () => {
       expect(responseJson.status).toEqual('success');
     });
 
-    it("should response 403 if trying to delete someone else's reply", async () => {
+    it("should response 403 when attempting to delete someone else's reply", async () => {
       // Arrange
       const userId = 'user-123';
       const threadId = 'thread-123';
       const commentId = 'comment-123';
       const replyId = 'reply-123';
 
-      await UsersTableTestHelper.addUser({ id: userId, username: 'danzbraham' });
-      await UsersTableTestHelper.addUser({ id: 'user-456', username: 'abra' });
-
-      const accessToken = await ServerTestHelper.getAccessToken({ id: userId });
-
+      await UsersTableTestHelper.addUser({ id: userId });
       await ThreadsTableTestHelper.addThread({ id: threadId, owner: userId });
       await CommentsTableTestHelper.addComment({ id: commentId, threadId, owner: userId });
-      await RepliesTableTestHelper.addReply({ id: replyId, commentId, owner: 'user-456' });
+      await RepliesTableTestHelper.addReply({ id: replyId, commentId, owner: userId });
+
+      await UsersTableTestHelper.addUser({ id: 'user-456', username: 'abra' });
+      const accessToken = await ServerTestHelper.getAccessToken({ id: 'user-456', username: 'abra' });
 
       const server = await createServer(container);
 
@@ -272,7 +251,7 @@ describe('/replies endpoint', () => {
       expect(responseJson.message).toEqual('you cannot delete this reply');
     });
 
-    it('should response 404 if thread does not exist', async () => {
+    it('should response 404 when the reply does not exist', async () => {
       // Arrange
       const userId = 'user-123';
       const threadId = 'thread-123';
@@ -280,10 +259,9 @@ describe('/replies endpoint', () => {
       const replyId = 'reply-123';
 
       await UsersTableTestHelper.addUser({ id: userId, username: 'danzbraham' });
-      const accessToken = await ServerTestHelper.getAccessToken({ id: userId });
-      await ThreadsTableTestHelper.addThread({ id: 'thread-456', owner: userId });
-      await CommentsTableTestHelper.addComment({ id: commentId, threadId: 'thread-456', owner: userId });
-      await RepliesTableTestHelper.addReply({ id: replyId, commentId, owner: userId });
+      const accessToken = await ServerTestHelper.getAccessToken({ id: userId, username: 'danzbraham' });
+      await ThreadsTableTestHelper.addThread({ id: threadId, owner: userId });
+      await CommentsTableTestHelper.addComment({ id: commentId, threadId, owner: userId });
 
       const server = await createServer(container);
 
@@ -300,10 +278,10 @@ describe('/replies endpoint', () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(404);
       expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual('thread not found');
+      expect(responseJson.message).toEqual('reply not found');
     });
 
-    it('should response 404 if comment does not exist', async () => {
+    it('should response 404 when the comment does not exist', async () => {
       // Arrange
       const userId = 'user-123';
       const threadId = 'thread-123';
@@ -311,10 +289,8 @@ describe('/replies endpoint', () => {
       const replyId = 'reply-123';
 
       await UsersTableTestHelper.addUser({ id: userId, username: 'danzbraham' });
-      const accessToken = await ServerTestHelper.getAccessToken({ id: userId });
+      const accessToken = await ServerTestHelper.getAccessToken({ id: userId, username: 'danzbraham' });
       await ThreadsTableTestHelper.addThread({ id: threadId, owner: userId });
-      await CommentsTableTestHelper.addComment({ id: 'comment-456', threadId, owner: userId });
-      await RepliesTableTestHelper.addReply({ id: replyId, commentId: 'comment-456', owner: userId });
 
       const server = await createServer(container);
 
@@ -334,7 +310,7 @@ describe('/replies endpoint', () => {
       expect(responseJson.message).toEqual('comment not found');
     });
 
-    it('should response 404 if reply does not exist', async () => {
+    it('should response 404 when the thread does not exist', async () => {
       // Arrange
       const userId = 'user-123';
       const threadId = 'thread-123';
@@ -342,10 +318,7 @@ describe('/replies endpoint', () => {
       const replyId = 'reply-123';
 
       await UsersTableTestHelper.addUser({ id: userId, username: 'danzbraham' });
-      const accessToken = await ServerTestHelper.getAccessToken({ id: userId });
-      await ThreadsTableTestHelper.addThread({ id: threadId, owner: userId });
-      await CommentsTableTestHelper.addComment({ id: commentId, threadId, owner: userId });
-      await RepliesTableTestHelper.addReply({ id: 'reply-456', commentId, owner: userId });
+      const accessToken = await ServerTestHelper.getAccessToken({ id: userId, username: 'danzbraham' });
 
       const server = await createServer(container);
 
@@ -362,7 +335,7 @@ describe('/replies endpoint', () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(404);
       expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual('reply not found');
+      expect(responseJson.message).toEqual('thread not found');
     });
   });
 });

@@ -16,7 +16,7 @@ class BcryptPasswordHasher extends PasswordHasher {
     const result = await this._bcrypt.compare(password, encryptedPassword);
 
     if (!result) {
-      throw new AuthenticationError('Invalid password');
+      throw new AuthenticationError('invalid password');
     }
   }
 }

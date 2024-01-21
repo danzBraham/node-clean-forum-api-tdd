@@ -1,7 +1,7 @@
-const pool = require('../../database/postgres/pool');
+const ServerTestHelper = require('../../../../tests/ServerTestHelper');
 const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper');
 const AuthenticationsTableTestHelper = require('../../../../tests/AuthenticationsTableTestHelper');
-const AuthenticationTokenManager = require('../../../Applications/security/AuthenticationTokenManager');
+const pool = require('../../database/postgres/pool');
 const container = require('../../container');
 const createServer = require('../createServer');
 
@@ -22,6 +22,7 @@ describe('/authentications endpoint', () => {
         username: 'danzbraham',
         password: 'secret',
       };
+
       const server = await createServer(container);
 
       // add user
@@ -50,12 +51,13 @@ describe('/authentications endpoint', () => {
       expect(responseJson.data.refreshToken).toBeDefined();
     });
 
-    it('should response 400 if username not found', async () => {
+    it('should response 400 when the username not found', async () => {
       // Arrange
       const requestPaylaod = {
         username: 'danzbraham',
         password: 'secret',
       };
+
       const server = await createServer(container);
 
       // Action
@@ -72,12 +74,13 @@ describe('/authentications endpoint', () => {
       expect(responseJson.message).toEqual('invalid username');
     });
 
-    it('should response 401 if the password is wrong', async () => {
+    it('should response 401 when the password is incorrect', async () => {
       // Arrange
       const requestPaylaod = {
         username: 'danzbraham',
         password: 'wrong-password',
       };
+
       const server = await createServer(container);
 
       // add user
@@ -102,14 +105,15 @@ describe('/authentications endpoint', () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(401);
       expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual('Invalid password');
+      expect(responseJson.message).toEqual('invalid password');
     });
 
-    it('should response 400 if login payload does not contain the required property', async () => {
+    it('should response 400 when the request payload does not contain the required property', async () => {
       // Arrange
       const requestPaylaod = {
         username: 'danzbraham',
       };
+
       const server = await createServer(container);
 
       // Action
@@ -126,12 +130,13 @@ describe('/authentications endpoint', () => {
       expect(responseJson.message).toEqual('must provide a username and password');
     });
 
-    it('should response 400 if login payload contain wrong data type', async () => {
+    it('should response 400 when the request payload contain wrong data type', async () => {
       // Arrange
       const requestPaylaod = {
         username: 'danzbraham',
         password: ['secret'],
       };
+
       const server = await createServer(container);
 
       // Action
@@ -152,29 +157,11 @@ describe('/authentications endpoint', () => {
   describe('when PUT /authentications', () => {
     it('should response 200 and grant a new access token', async () => {
       // Arrange
+      await UsersTableTestHelper.addUser({ id: 'user-123', username: 'danzbraham' });
+      const refreshToken = await ServerTestHelper.getRefreshToken({ id: 'user-123', username: 'danzbraham' });
+      await AuthenticationsTableTestHelper.addToken(refreshToken);
+
       const server = await createServer(container);
-
-      // add user
-      await server.inject({
-        method: 'POST',
-        url: '/users',
-        payload: {
-          username: 'danzbraham',
-          password: 'secret',
-          fullname: 'Zidan Abraham',
-        },
-      });
-
-      // login user
-      const loginResponse = await server.inject({
-        method: 'POST',
-        url: '/authentications',
-        payload: {
-          username: 'danzbraham',
-          password: 'secret',
-        },
-      });
-      const { data: { refreshToken } } = JSON.parse(loginResponse.payload);
 
       // Action
       const response = await server.inject({
@@ -190,7 +177,7 @@ describe('/authentications endpoint', () => {
       expect(responseJson.data.accessToken).toBeDefined();
     });
 
-    it('should response 400 if the request payload does not contain a refresh token', async () => {
+    it('should response 400 when the request payload does not contain a refresh token', async () => {
       // Arrange
       const server = await createServer(container);
 
@@ -208,15 +195,16 @@ describe('/authentications endpoint', () => {
       expect(responseJson.message).toEqual('must provide a refresh token');
     });
 
-    it('should response 400 if the refresh token is not a string', async () => {
+    it('should response 400 when the refresh token is not a string', async () => {
       // Arrange
+      const refreshToken = [true];
       const server = await createServer(container);
 
       // Action
       const response = await server.inject({
         method: 'PUT',
         url: '/authentications',
-        payload: { refreshToken: [true] },
+        payload: { refreshToken },
       });
 
       // Assert
@@ -226,30 +214,29 @@ describe('/authentications endpoint', () => {
       expect(responseJson.message).toEqual('refresh token must be a string');
     });
 
-    it('should response 400 if the refresh token is not valid', async () => {
+    it('should response 400 when the refresh token is invalid', async () => {
       // Arrange
+      const refreshToken = 'invalid-refresh-token';
       const server = await createServer(container);
 
       // Action
       const response = await server.inject({
         method: 'PUT',
         url: '/authentications',
-        payload: { refreshToken: 'invalid-refresh-token' },
+        payload: { refreshToken },
       });
 
       // Assert
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(400);
       expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual('refresh token is invalid');
+      expect(responseJson.message).toEqual('invalid refresh token');
     });
 
-    it('should response 400 if the refresh token is not registered in the database', async () => {
+    it('should response 400 when the refresh token is not registered in the database', async () => {
       // Arrange
+      const refreshToken = await ServerTestHelper.getRefreshToken({ id: 'user-123', username: 'danzbraham' });
       const server = await createServer(container);
-      const refreshToken = await container
-        .getInstance(AuthenticationTokenManager.name)
-        .createRefreshToken({ id: 'user-123', username: 'danzbraham' });
 
       // Action
       const response = await server.inject({
@@ -267,11 +254,11 @@ describe('/authentications endpoint', () => {
   });
 
   describe('when DELETE /authentications', () => {
-    it('should response 200 if the user logs out successfully', async () => {
+    it('should response 200 when the user logs out successfully', async () => {
       // Arrange
-      const server = await createServer(container);
       const refreshToken = 'refresh-token';
       await AuthenticationsTableTestHelper.addToken(refreshToken);
+      const server = await createServer(container);
 
       // Action
       const response = await server.inject({
@@ -286,7 +273,7 @@ describe('/authentications endpoint', () => {
       expect(responseJson.status).toEqual('success');
     });
 
-    it('should response 400 if the request payload does not contain a refresh token', async () => {
+    it('should response 400 when the request payload does not contain a refresh token', async () => {
       // Arrange
       const server = await createServer(container);
 
@@ -304,15 +291,16 @@ describe('/authentications endpoint', () => {
       expect(responseJson.message).toEqual('must provide a refresh token');
     });
 
-    it('should response 400 if the refresh token is not a string', async () => {
+    it('should response 400 when the refresh token is not a string', async () => {
       // Arrange
+      const refreshToken = [true];
       const server = await createServer(container);
 
       // Action
       const response = await server.inject({
         method: 'DELETE',
         url: '/authentications',
-        payload: { refreshToken: [true] },
+        payload: { refreshToken },
       });
 
       // Assert
@@ -322,12 +310,10 @@ describe('/authentications endpoint', () => {
       expect(responseJson.message).toEqual('refresh token must be a string');
     });
 
-    it('should response 400 if the refresh token is not registered in the database', async () => {
+    it('should response 400 when the refresh token is not registered in the database', async () => {
       // Arrange
+      const refreshToken = await ServerTestHelper.getRefreshToken({ id: 'user-123', username: 'danzbraham' });
       const server = await createServer(container);
-      const refreshToken = await container
-        .getInstance(AuthenticationTokenManager.name)
-        .createRefreshToken({ id: 'user-123', username: 'danzbraham' });
 
       // Action
       const response = await server.inject({

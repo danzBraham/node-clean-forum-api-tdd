@@ -1,5 +1,5 @@
-const pool = require('../../database/postgres/pool');
 const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper');
+const pool = require('../../database/postgres/pool');
 const container = require('../../container');
 const createServer = require('../createServer');
 
@@ -13,13 +13,14 @@ describe('/users endpoint', () => {
   });
 
   describe('when POST /users', () => {
-    it('should response 201 and persist user', async () => {
+    it('should response 201 and persist the user', async () => {
       // Arrange
       const requestPayload = {
         username: 'danzbraham',
         password: 'secret',
         fullname: 'Zidan Abraham',
       };
+
       const server = await createServer(container);
 
       // Action
@@ -36,12 +37,13 @@ describe('/users endpoint', () => {
       expect(responseJson.data.addedUser).toBeDefined();
     });
 
-    it('should response 400 when request payload not contain required property', async () => {
+    it('should response 400 when the request payload not contain required property', async () => {
       // Arrange
       const requestPayload = {
         username: 'danzbraham',
         password: 'secret',
       };
+
       const server = await createServer(container);
 
       // Action
@@ -58,13 +60,14 @@ describe('/users endpoint', () => {
       expect(responseJson.message).toEqual('cannot create a user because the required properties are missing');
     });
 
-    it('should response 400 when request payload not meet data type specification', async () => {
+    it('should response 400 when the request payload not meet data type specification', async () => {
       // Arrange
       const requestPayload = {
         username: 'danzbraham',
         password: true,
         fullname: ['Zidan', 'Abraham'],
       };
+
       const server = await createServer(container);
 
       // Action
@@ -88,6 +91,7 @@ describe('/users endpoint', () => {
         password: 'secret',
         fullname: 'Zidan Abraham',
       };
+
       const server = await createServer(container);
 
       // Action
@@ -111,6 +115,7 @@ describe('/users endpoint', () => {
         password: 'secret',
         fullname: 'Zidan Abraham',
       };
+
       const server = await createServer(container);
 
       // Action
@@ -129,12 +134,13 @@ describe('/users endpoint', () => {
 
     it('should response 400 when the username not available', async () => {
       // Arrange
-      await UsersTableTestHelper.addUser({ username: 'danzbraham' });
       const requestPayload = {
         username: 'danzbraham',
         password: 'secret',
         fullname: 'Zidan Abraham',
       };
+
+      await UsersTableTestHelper.addUser({ username: 'danzbraham' });
       const server = await createServer(container);
 
       // Action

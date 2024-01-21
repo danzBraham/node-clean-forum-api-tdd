@@ -1,9 +1,9 @@
 const AuthorizationError = require('../../Commons/AuthorizationError');
 const NotFoundError = require('../../Commons/NotFoundError');
-const ReplyRepository = require('../../Domains/replies/ReplyRepository');
 const AddReply = require('../../Domains/replies/entities/AddReply');
 const AddedReply = require('../../Domains/replies/entities/AddedReply');
 const DeleteReply = require('../../Domains/replies/entities/DeleteReply');
+const ReplyRepository = require('../../Domains/replies/ReplyRepository');
 
 class ReplyRepositoryPostgres extends ReplyRepository {
   constructor(pool, idGenerator) {

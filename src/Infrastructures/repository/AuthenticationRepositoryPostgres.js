@@ -21,7 +21,6 @@ class AuthenticationRepositoryPostgres extends AuthenticationRepository {
       text: 'SELECT token FROM authentications WHERE token = $1',
       values: [token],
     };
-
     const result = await this._pool.query(query);
 
     if (!result.rowCount) {

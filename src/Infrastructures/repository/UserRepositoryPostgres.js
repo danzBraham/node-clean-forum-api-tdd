@@ -1,6 +1,7 @@
 const InvariantError = require('../../Commons/InvariantError');
-const UserRepository = require('../../Domains/users/UserRepository');
+const RegisterUser = require('../../Domains/users/entities/RegisterUser');
 const RegisteredUser = require('../../Domains/users/entities/RegisteredUser');
+const UserRepository = require('../../Domains/users/UserRepository');
 
 class UserRepositoryPostgres extends UserRepository {
   constructor(pool, idGenerator) {
@@ -14,7 +15,6 @@ class UserRepositoryPostgres extends UserRepository {
       text: 'SELECT username FROM users WHERE username = $1',
       values: [username],
     };
-
     const result = await this._pool.query(query);
 
     if (result.rowCount) {
@@ -23,14 +23,13 @@ class UserRepositoryPostgres extends UserRepository {
   }
 
   async addUser(registerUser) {
-    const { username, password, fullname } = registerUser;
+    const { username, password, fullname } = new RegisterUser(registerUser);
     const id = `user-${this._idGenerator()}`;
 
     const query = {
       text: 'INSERT INTO users VALUES($1, $2, $3, $4) RETURNING id, username, fullname',
       values: [id, username, password, fullname],
     };
-
     const result = await this._pool.query(query);
 
     return new RegisteredUser({ ...result.rows[0] });
@@ -41,7 +40,6 @@ class UserRepositoryPostgres extends UserRepository {
       text: 'SELECT id FROM users WHERE username = $1',
       values: [username],
     };
-
     const result = await this._pool.query(query);
 
     if (!result.rowCount) {
@@ -56,7 +54,6 @@ class UserRepositoryPostgres extends UserRepository {
       text: 'SELECT password FROM users WHERE username = $1',
       values: [username],
     };
-
     const result = await this._pool.query(query);
 
     if (!result.rowCount) {

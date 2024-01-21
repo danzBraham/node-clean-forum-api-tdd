@@ -1,8 +1,8 @@
 const NotFoundError = require('../../Commons/NotFoundError');
-const ThreadRepository = require('../../Domains/threads/ThreadRepository');
 const AddThread = require('../../Domains/threads/entities/AddThread');
 const AddedThread = require('../../Domains/threads/entities/AddedThread');
 const GotThread = require('../../Domains/threads/entities/GotThread');
+const ThreadRepository = require('../../Domains/threads/ThreadRepository');
 
 class ThreadRepositoryPostgres extends ThreadRepository {
   constructor(pool, idGenerator) {
@@ -38,16 +38,16 @@ class ThreadRepositoryPostgres extends ThreadRepository {
   }
 
   async getThreadById(threadId) {
-    const queryThreadById = {
+    const threadQuery = {
       text: `SELECT t.id, t.title, t.body, t.date, u.username
               FROM threads AS t
               JOIN users AS u ON t.owner = u.id
               WHERE t.id = $1`,
       values: [threadId],
     };
-    const resultThreadById = await this._pool.query(queryThreadById);
+    const threadResult = await this._pool.query(threadQuery);
 
-    const queryCommentsByThreadId = {
+    const commentsQuery = {
       text: `SELECT c.id, u.username ,c.date, c.content, c.is_deleted
               FROM comments AS c
               JOIN users AS u ON c.owner = u.id
@@ -55,19 +55,18 @@ class ThreadRepositoryPostgres extends ThreadRepository {
               WHERE t.id = $1`,
       values: [threadId],
     };
-    const resultCommentsByThreadId = await this._pool.query(queryCommentsByThreadId);
+    const commentsResult = await this._pool.query(commentsQuery);
 
-    const mappedResultCommentsByThreadId = resultCommentsByThreadId.rows
-      .map(({
-        id, username, date, content, is_deleted: isDeleted,
-      }) => ({
-        id,
-        username,
-        date,
-        content: isDeleted ? '**comment has been deleted**' : content,
-      }));
+    const mappedComments = commentsResult.rows.map(({
+      id, username, date, content, is_deleted: isDeleted,
+    }) => ({
+      id,
+      username,
+      date,
+      content: isDeleted ? '**comment has been deleted**' : content,
+    }));
 
-    return new GotThread({ ...resultThreadById.rows[0], comments: mappedResultCommentsByThreadId });
+    return new GotThread({ ...threadResult.rows[0], comments: mappedComments });
   }
 }
 
