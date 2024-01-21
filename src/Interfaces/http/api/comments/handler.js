@@ -4,12 +4,11 @@ const DeleteCommentUseCase = require('../../../../Applications/use_case/comments
 class CommentsHandler {
   constructor(container) {
     this._container = container;
-    this.postCommentByThreadIdHandler = this.postCommentByThreadIdHandler.bind(this);
-    this.deleteCommentByThreadIdAndCommentIdHandler = this
-      .deleteCommentByThreadIdAndCommentIdHandler.bind(this);
+    this.postCommentHandler = this.postCommentHandler.bind(this);
+    this.deleteCommentByIdHandler = this.deleteCommentByIdHandler.bind(this);
   }
 
-  async postCommentByThreadIdHandler(request, h) {
+  async postCommentHandler(request, h) {
     const addCommentUseCase = this._container.getInstance(AddCommentUseCase.name);
     const { id: userId } = request.auth.credentials;
     const { threadId } = request.params;
@@ -23,7 +22,7 @@ class CommentsHandler {
     return response;
   }
 
-  async deleteCommentByThreadIdAndCommentIdHandler(request, h) {
+  async deleteCommentByIdHandler(request, h) {
     const deleteCommentUseCase = this._container.getInstance(DeleteCommentUseCase.name);
     const { id: userId } = request.auth.credentials;
     const { threadId, commentId } = request.params;

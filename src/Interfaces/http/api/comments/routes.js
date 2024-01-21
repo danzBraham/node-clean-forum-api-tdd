@@ -2,7 +2,7 @@ const routes = (handler) => ([
   {
     method: 'POST',
     path: '/threads/{threadId}/comments',
-    handler: handler.postCommentByThreadIdHandler,
+    handler: handler.postCommentHandler,
     options: {
       auth: 'forum-api-jwt',
     },
@@ -10,7 +10,7 @@ const routes = (handler) => ([
   {
     method: 'DELETE',
     path: '/threads/{threadId}/comments/{commentId}',
-    handler: handler.deleteCommentByThreadIdAndCommentIdHandler,
+    handler: handler.deleteCommentByIdHandler,
     options: {
       auth: 'forum-api-jwt',
     },
