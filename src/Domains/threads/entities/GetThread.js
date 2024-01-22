@@ -1,10 +1,10 @@
-class GotThread {
-  constructor(returnedValue) {
-    this._verifyReturnedValue(returnedValue);
+class GetThread {
+  constructor(payload) {
+    this._verifyPayload(payload);
 
     const {
       id, title, body, date, username, comments,
-    } = returnedValue;
+    } = payload;
 
     this.id = id;
     this.title = title;
@@ -14,11 +14,11 @@ class GotThread {
     this.comments = comments;
   }
 
-  _verifyReturnedValue({
+  _verifyPayload({
     id, title, body, date, username, comments,
   }) {
     if (!id || !title || !body || !date || !username || !comments) {
-      throw new Error('GOT_THREAD.NOT_CONTAIN_REQUIRED_PROPERTY');
+      throw new Error('GET_THREAD.NOT_CONTAIN_REQUIRED_PROPERTY');
     }
 
     if (typeof id !== 'string'
@@ -27,11 +27,10 @@ class GotThread {
         || typeof date !== 'string'
         || typeof username !== 'string'
         || !Array.isArray(comments)
-        || !comments.every((comment) => typeof comment === 'object')
     ) {
-      throw new Error('GOT_THREAD.NOT_MEET_DATA_TYPE_SPECIFICATION');
+      throw new Error('GET_THREAD.NOT_MEET_DATA_TYPE_SPECIFICATION');
     }
   }
 }
 
-module.exports = GotThread;
+module.exports = GetThread;

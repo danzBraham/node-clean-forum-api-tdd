@@ -1,4 +1,4 @@
-const GotThread = require('../../../../Domains/threads/entities/GotThread');
+const GetThread = require('../../../../Domains/threads/entities/GetThread');
 const ThreadRepository = require('../../../../Domains/threads/ThreadRepository');
 const GetThreadByIdUseCase = require('../GetThreadByIdUseCase');
 
@@ -7,7 +7,7 @@ describe('GetThreadByIdUseCase', () => {
     // Arrange
     const threadId = 'thread-123';
 
-    const expectedGotThread = new GotThread({
+    const expectedGetThread = new GetThread({
       id: threadId,
       title: 'My Thread',
       body: 'Hello this is my Thread',
@@ -28,7 +28,7 @@ describe('GetThreadByIdUseCase', () => {
     mockThreadRepository.checkAvailabilityThread = jest.fn()
       .mockImplementation(() => Promise.resolve());
     mockThreadRepository.getThreadById = jest.fn()
-      .mockImplementation(() => Promise.resolve(new GotThread({
+      .mockImplementation(() => Promise.resolve(new GetThread({
         id: 'thread-123',
         title: 'My Thread',
         body: 'Hello this is my Thread',
@@ -48,10 +48,10 @@ describe('GetThreadByIdUseCase', () => {
     });
 
     // Action
-    const gotThread = await getThreadByIdUseCase.execute(threadId);
+    const getThread = await getThreadByIdUseCase.execute(threadId);
 
     // Assert
-    expect(gotThread).toStrictEqual(expectedGotThread);
+    expect(getThread).toStrictEqual(expectedGetThread);
     expect(mockThreadRepository.checkAvailabilityThread).toHaveBeenCalledWith(threadId);
     expect(mockThreadRepository.getThreadById).toHaveBeenCalledWith(threadId);
   });

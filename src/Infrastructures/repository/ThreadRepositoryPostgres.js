@@ -1,7 +1,7 @@
 const NotFoundError = require('../../Commons/NotFoundError');
 const AddThread = require('../../Domains/threads/entities/AddThread');
 const AddedThread = require('../../Domains/threads/entities/AddedThread');
-const GotThread = require('../../Domains/threads/entities/GotThread');
+const GetThread = require('../../Domains/threads/entities/GetThread');
 const ThreadRepository = require('../../Domains/threads/ThreadRepository');
 
 class ThreadRepositoryPostgres extends ThreadRepository {
@@ -66,7 +66,7 @@ class ThreadRepositoryPostgres extends ThreadRepository {
       content: isDeleted ? '**comment has been deleted**' : content,
     }));
 
-    return new GotThread({ ...threadResult.rows[0], comments: mappedComments });
+    return new GetThread({ ...threadResult.rows[0], comments: mappedComments });
   }
 }
 

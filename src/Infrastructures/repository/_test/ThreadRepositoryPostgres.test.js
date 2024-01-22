@@ -4,7 +4,7 @@ const ThreadsTableTestHelper = require('../../../../tests/ThreadsTableTestHelper
 const CommentsTableTestHelper = require('../../../../tests/CommentsTableTestHelper');
 const AddThread = require('../../../Domains/threads/entities/AddThread');
 const AddedThread = require('../../../Domains/threads/entities/AddedThread');
-const GotThread = require('../../../Domains/threads/entities/GotThread');
+const GetThread = require('../../../Domains/threads/entities/GetThread');
 const pool = require('../../database/postgres/pool');
 const ThreadRepositoryPostgres = require('../ThreadRepositoryPostgres');
 
@@ -103,7 +103,7 @@ describe('ThreadRepositoryPostgres', () => {
       const threadId = 'thread-123';
       const fixedDate = new Date().toISOString();
 
-      const expectedGotThread = new GotThread({
+      const expectedGetThread = new GetThread({
         id: threadId,
         title: 'My Thread',
         body: 'Hello this is my Thread',
@@ -156,10 +156,10 @@ describe('ThreadRepositoryPostgres', () => {
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
 
       // Action
-      const gotThread = await threadRepositoryPostgres.getThreadById(threadId);
+      const getThread = await threadRepositoryPostgres.getThreadById(threadId);
 
       // Assert
-      expect(gotThread).toStrictEqual(expectedGotThread);
+      expect(getThread).toStrictEqual(expectedGetThread);
     });
   });
 });
