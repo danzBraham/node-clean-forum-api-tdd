@@ -1,4 +1,4 @@
-const AuthenticationError = require('../../Commons/AuthenticationError');
+const AuthenticationError = require('../../Commons/exceptions/AuthenticationError');
 const PasswordHasher = require('../../Applications/security/PasswordHasher');
 
 class BcryptPasswordHasher extends PasswordHasher {

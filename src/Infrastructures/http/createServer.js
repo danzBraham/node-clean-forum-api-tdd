@@ -7,8 +7,8 @@ const threads = require('../../Interfaces/http/api/threads');
 const comments = require('../../Interfaces/http/api/comments');
 const replies = require('../../Interfaces/http/api/replies');
 
-const ClientError = require('../../Commons/ClientError');
-const DomainErrorTranslator = require('../../Commons/DomainErrorTranslator');
+const ClientError = require('../../Commons/exceptions/ClientError');
+const DomainErrorTranslator = require('../../Commons/exceptions/DomainErrorTranslator');
 
 const createServer = async (container) => {
   const server = Hapi.server({

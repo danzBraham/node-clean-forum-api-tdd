@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const AuthenticationError = require('../../../Commons/AuthenticationError');
+const AuthenticationError = require('../../../Commons/exceptions/AuthenticationError');
 const BcryptPasswordHasher = require('../BcryptPasswordHasher');
 
 describe('BcryptPasswordHasher', () => {

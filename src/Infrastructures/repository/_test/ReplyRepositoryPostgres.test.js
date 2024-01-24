@@ -1,5 +1,5 @@
-const AuthorizationError = require('../../../Commons/AuthorizationError');
-const NotFoundError = require('../../../Commons/NotFoundError');
+const AuthorizationError = require('../../../Commons/exceptions/AuthorizationError');
+const NotFoundError = require('../../../Commons/exceptions/NotFoundError');
 const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper');
 const ThreadsTableTestHelper = require('../../../../tests/ThreadsTableTestHelper');
 const CommentsTableTestHelper = require('../../../../tests/CommentsTableTestHelper');

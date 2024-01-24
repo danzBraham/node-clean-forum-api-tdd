@@ -1,5 +1,5 @@
 const Jwt = require('@hapi/jwt');
-const InvariantError = require('../../../Commons/InvariantError');
+const InvariantError = require('../../../Commons/exceptions/InvariantError');
 const JwtTokenManager = require('../JwtTokenManager');
 
 describe('JwtTokenManager', () => {

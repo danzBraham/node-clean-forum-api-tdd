@@ -1,4 +1,4 @@
-const InvariantError = require('../../../Commons/InvariantError');
+const InvariantError = require('../../../Commons/exceptions/InvariantError');
 const AuthenticationsTableTestHelper = require('../../../../tests/AuthenticationsTableTestHelper');
 const pool = require('../../database/postgres/pool');
 const AuthenticationRepositoryPostgres = require('../AuthenticationRepositoryPostgres');

@@ -1,5 +1,5 @@
-const AuthorizationError = require('../../Commons/AuthorizationError');
-const NotFoundError = require('../../Commons/NotFoundError');
+const AuthorizationError = require('../../Commons/exceptions/AuthorizationError');
+const NotFoundError = require('../../Commons/exceptions/NotFoundError');
 const AddComment = require('../../Domains/comments/entities/AddComment');
 const AddedComment = require('../../Domains/comments/entities/AddedComment');
 const GetComment = require('../../Domains/comments/entities/GetComment');

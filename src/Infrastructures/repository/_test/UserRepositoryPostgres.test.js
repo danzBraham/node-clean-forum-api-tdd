@@ -1,4 +1,4 @@
-const InvariantError = require('../../../Commons/InvariantError');
+const InvariantError = require('../../../Commons/exceptions/InvariantError');
 const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper');
 const RegisterUser = require('../../../Domains/users/entities/RegisterUser');
 const RegisteredUser = require('../../../Domains/users/entities/RegisteredUser');
