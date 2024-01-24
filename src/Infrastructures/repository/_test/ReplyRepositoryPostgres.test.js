@@ -6,6 +6,7 @@ const CommentsTableTestHelper = require('../../../../tests/CommentsTableTestHelp
 const RepliesTableTestHelper = require('../../../../tests/RepliesTableTestHelper');
 const AddReply = require('../../../Domains/replies/entities/AddReply');
 const AddedReply = require('../../../Domains/replies/entities/AddedReply');
+const GetReply = require('../../../Domains/replies/entities/GetReply');
 const DeleteReply = require('../../../Domains/replies/entities/DeleteReply');
 const pool = require('../../database/postgres/pool');
 const ReplyRepositoryPostgres = require('../ReplyRepositoryPostgres');
@@ -117,6 +118,61 @@ describe('ReplyRepositoryPostgres', () => {
       await expect(replyRepositoryPostgres.checkAvailabilityReply(replyId))
         .resolves
         .not.toThrow(NotFoundError);
+    });
+  });
+
+  describe('getRepliesByCommentId function', () => {
+    it('should return replies correctly', async () => {
+      // Arrange
+      const commentId = 'comment-123';
+      const fixedDate = new Date().toISOString();
+
+      const expectedGetReplies = [
+        new GetReply({
+          id: 'reply-123',
+          username: 'danzbraham',
+          date: fixedDate,
+          content: 'a reply',
+          is_deleted: false,
+        }),
+        new GetReply({
+          id: 'reply-456',
+          username: 'abra',
+          date: fixedDate,
+          content: 'a reply',
+          is_deleted: false,
+        }),
+      ];
+
+      await UsersTableTestHelper.addUser({ id: 'user-123', username: 'danzbraham' });
+      await ThreadsTableTestHelper.addThread({ id: 'thread-123', owner: 'user-123' });
+      await CommentsTableTestHelper.addComment({ id: commentId, threadId: 'thread-123', owner: 'user-123' });
+      await RepliesTableTestHelper.addReply({
+        id: 'reply-123',
+        commentId,
+        content: 'a reply',
+        date: fixedDate,
+        owner: 'user-123',
+        isDeleted: false,
+      });
+
+      await UsersTableTestHelper.addUser({ id: 'user-456', username: 'abra' });
+      await RepliesTableTestHelper.addReply({
+        id: 'reply-456',
+        commentId,
+        content: 'a reply',
+        date: fixedDate,
+        owner: 'user-456',
+        isDeleted: false,
+      });
+
+      const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, {});
+
+      // Action
+      const getReplies = await replyRepositoryPostgres.getRepliesByCommentId('comment-123');
+
+      // Assert
+      expect(getReplies).toStrictEqual(expectedGetReplies);
     });
   });
 

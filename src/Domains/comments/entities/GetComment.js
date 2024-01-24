@@ -1,22 +1,24 @@
+/* eslint-disable camelcase */
 class GetComment {
   constructor(payload) {
     this._verifyPayload(payload);
 
     const {
-      id, username, date, content, is_deleted: isDeleted, replies,
+      id, username, date, content, is_deleted, replies,
     } = payload;
 
     this.id = id;
     this.username = username;
     this.date = date;
-    this.content = isDeleted ? GetComment.DELETE_COMMENT_MESSAGE : content;
+    this.content = is_deleted ? GetComment.DELETE_COMMENT_MESSAGE : content;
+    this.is_deleted = is_deleted;
     this.replies = replies;
   }
 
   _verifyPayload({
-    id, username, date, content, is_deleted: isDeleted, replies,
+    id, username, date, content, is_deleted, replies,
   }) {
-    if (!id || !username || !date || !content || isDeleted === undefined || !replies) {
+    if (!id || !username || !date || !content || is_deleted === undefined || !replies) {
       throw new Error('GET_COMMENT.NOT_CONTAIN_REQUIRED_PROPERTY');
     }
 
@@ -24,7 +26,7 @@ class GetComment {
         || typeof username !== 'string'
         || typeof date !== 'string'
         || typeof content !== 'string'
-        || typeof isDeleted !== 'boolean'
+        || typeof is_deleted !== 'boolean'
         || !Array.isArray(replies)
     ) {
       throw new Error('GET_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION');

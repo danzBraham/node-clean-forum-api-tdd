@@ -38,35 +38,16 @@ class ThreadRepositoryPostgres extends ThreadRepository {
   }
 
   async getThreadById(threadId) {
-    const threadQuery = {
+    const query = {
       text: `SELECT t.id, t.title, t.body, t.date, u.username
               FROM threads AS t
-              JOIN users AS u ON t.owner = u.id
+              JOIN users AS u ON u.id = t.owner
               WHERE t.id = $1`,
       values: [threadId],
     };
-    const threadResult = await this._pool.query(threadQuery);
+    const result = await this._pool.query(query);
 
-    const commentsQuery = {
-      text: `SELECT c.id, u.username ,c.date, c.content, c.is_deleted
-              FROM comments AS c
-              JOIN users AS u ON c.owner = u.id
-              JOIN threads AS t ON c.thread_id = t.id
-              WHERE t.id = $1`,
-      values: [threadId],
-    };
-    const commentsResult = await this._pool.query(commentsQuery);
-
-    const mappedComments = commentsResult.rows.map(({
-      id, username, date, content, is_deleted: isDeleted,
-    }) => ({
-      id,
-      username,
-      date,
-      content: isDeleted ? '**comment has been deleted**' : content,
-    }));
-
-    return new GetThread({ ...threadResult.rows[0], comments: mappedComments });
+    return new GetThread({ ...result.rows[0], comments: [] });
   }
 }
 

@@ -5,6 +5,7 @@ const ThreadsTableTestHelper = require('../../../../tests/ThreadsTableTestHelper
 const CommentsTableTestHelper = require('../../../../tests/CommentsTableTestHelper');
 const AddComment = require('../../../Domains/comments/entities/AddComment');
 const AddedComment = require('../../../Domains/comments/entities/AddedComment');
+const GetComment = require('../../../Domains/comments/entities/GetComment');
 const DeleteComment = require('../../../Domains/comments/entities/DeleteComment');
 const pool = require('../../database/postgres/pool');
 const CommentRepositoryPostgres = require('../CommentRepositoryPostgres');
@@ -99,6 +100,62 @@ describe('CommentRepositoryPostgres', () => {
       await expect(commentRepositoryPostgres.checkAvailabilityComment(commentId))
         .resolves
         .not.toThrow(NotFoundError);
+    });
+  });
+
+  describe('getCommentsByThreadId function', () => {
+    it('should return comments correctly', async () => {
+      // Arrange
+      const threadId = 'thread-123';
+      const fixedDate = new Date().toISOString();
+
+      const expectedGetComments = [
+        new GetComment({
+          id: 'comment-123',
+          username: 'danzbraham',
+          date: fixedDate,
+          content: 'a comment',
+          is_deleted: false,
+          replies: [],
+        }),
+        new GetComment({
+          id: 'comment-456',
+          username: 'abra',
+          date: fixedDate,
+          content: 'a comment',
+          is_deleted: false,
+          replies: [],
+        }),
+      ];
+
+      await UsersTableTestHelper.addUser({ id: 'user-123', username: 'danzbraham' });
+      await ThreadsTableTestHelper.addThread({ id: 'thread-123', owner: 'user-123' });
+      await CommentsTableTestHelper.addComment({
+        id: 'comment-123',
+        threadId,
+        date: fixedDate,
+        content: 'a comment',
+        owner: 'user-123',
+        isDeleted: false,
+      });
+
+      await UsersTableTestHelper.addUser({ id: 'user-456', username: 'abra' });
+      await CommentsTableTestHelper.addComment({
+        id: 'comment-456',
+        threadId,
+        date: fixedDate,
+        content: 'a comment',
+        owner: 'user-456',
+        isDeleted: false,
+      });
+
+      const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
+
+      // Action
+      const getComments = await commentRepositoryPostgres.getCommentsByThreadId(threadId);
+
+      // Assert
+      expect(getComments).toStrictEqual(expectedGetComments);
     });
   });
 

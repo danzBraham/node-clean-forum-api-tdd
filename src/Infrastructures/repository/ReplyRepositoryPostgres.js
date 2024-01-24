@@ -2,6 +2,7 @@ const AuthorizationError = require('../../Commons/AuthorizationError');
 const NotFoundError = require('../../Commons/NotFoundError');
 const AddReply = require('../../Domains/replies/entities/AddReply');
 const AddedReply = require('../../Domains/replies/entities/AddedReply');
+const GetReply = require('../../Domains/replies/entities/GetReply');
 const DeleteReply = require('../../Domains/replies/entities/DeleteReply');
 const ReplyRepository = require('../../Domains/replies/ReplyRepository');
 
@@ -36,6 +37,20 @@ class ReplyRepositoryPostgres extends ReplyRepository {
     if (!result.rowCount) {
       throw new NotFoundError('reply not found');
     }
+  }
+
+  async getRepliesByCommentId(commentId) {
+    const query = {
+      text: `SELECT r.id, u.username, r.date, r.content, r.is_deleted
+              FROM replies AS r
+              JOIN users AS u ON u.id = r.owner
+              JOIN comments AS c ON c.id = r.comment_id
+              WHERE c.id = $1`,
+      values: [commentId],
+    };
+    const result = await this._pool.query(query);
+
+    return result.rows.map((reply) => new GetReply(reply));
   }
 
   async deleteReply(reply) {

@@ -106,51 +106,19 @@ describe('ThreadRepositoryPostgres', () => {
       const expectedGetThread = new GetThread({
         id: threadId,
         title: 'My Thread',
-        body: 'Hello this is my Thread',
+        body: 'a thread',
         date: fixedDate,
         username: 'danzbraham',
-        comments: [
-          {
-            id: 'comment-123',
-            username: 'luffy',
-            date: fixedDate,
-            content: 'first',
-          },
-          {
-            id: 'comment-456',
-            username: 'zoro',
-            date: fixedDate,
-            content: '**comment has been deleted**',
-          },
-        ],
+        comments: [],
       });
 
       await UsersTableTestHelper.addUser({ id: 'user-123', username: 'danzbraham' });
-      await UsersTableTestHelper.addUser({ id: 'user-456', username: 'luffy' });
-      await UsersTableTestHelper.addUser({ id: 'user-789', username: 'zoro' });
-
       await ThreadsTableTestHelper.addThread({
         id: threadId,
         title: 'My Thread',
-        body: 'Hello this is my Thread',
+        body: 'a thread',
         date: fixedDate,
         owner: 'user-123',
-      });
-
-      await CommentsTableTestHelper.addComment({
-        id: 'comment-123',
-        threadId,
-        date: fixedDate,
-        content: 'first',
-        owner: 'user-456',
-      });
-      await CommentsTableTestHelper.addComment({
-        id: 'comment-456',
-        threadId,
-        date: fixedDate,
-        content: 'second',
-        owner: 'user-789',
-        isDeleted: true,
       });
 
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
