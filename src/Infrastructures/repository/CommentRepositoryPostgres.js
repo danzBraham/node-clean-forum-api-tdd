@@ -35,7 +35,7 @@ class CommentRepositoryPostgres extends CommentRepository {
     const result = await this._pool.query(query);
 
     if (!result.rowCount) {
-      throw new NotFoundError('comment not found');
+      throw new NotFoundError('komentar tidak ditemukan');
     }
   }
 
@@ -64,7 +64,7 @@ class CommentRepositoryPostgres extends CommentRepository {
     const result = await this._pool.query(query);
 
     if (!result.rowCount) {
-      throw new AuthorizationError('you cannot delete this comment');
+      throw new AuthorizationError('anda tidak bisa menghapus komentar ini');
     }
   }
 }
