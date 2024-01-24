@@ -31,6 +31,6 @@ class GetReply {
   }
 }
 
-GetReply.DELETE_REPLY_MESSAGE = '**reply has been deleted**';
+GetReply.DELETE_REPLY_MESSAGE = '**balasan telah dihapus**';
 
 module.exports = GetReply;

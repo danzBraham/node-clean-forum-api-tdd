@@ -59,7 +59,7 @@ describe('GetComment', () => {
       id: 'user-123',
       username: 'danzbraham',
       date: '2024',
-      content: '**comment has been deleted**',
+      content: '**komentar telah dihapus**',
       is_deleted: true,
       replies: [],
     };
