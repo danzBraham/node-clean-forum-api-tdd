@@ -151,7 +151,7 @@ describe('/replies endpoint', () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(404);
       expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual('comment not found');
+      expect(responseJson.message).toEqual('komentar tidak ditemukan');
     });
 
     it('should response 404 when the thread does not exist', async () => {
@@ -183,7 +183,7 @@ describe('/replies endpoint', () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(404);
       expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual('thread not found');
+      expect(responseJson.message).toEqual('thread tidak ditemukan');
     });
   });
 
@@ -248,7 +248,7 @@ describe('/replies endpoint', () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(403);
       expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual('you cannot delete this reply');
+      expect(responseJson.message).toEqual('anda tidak bisa menghapus balasan ini');
     });
 
     it('should response 404 when the reply does not exist', async () => {
@@ -278,7 +278,7 @@ describe('/replies endpoint', () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(404);
       expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual('reply not found');
+      expect(responseJson.message).toEqual('balasan tidak ditemukan');
     });
 
     it('should response 404 when the comment does not exist', async () => {
@@ -307,7 +307,7 @@ describe('/replies endpoint', () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(404);
       expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual('comment not found');
+      expect(responseJson.message).toEqual('komentar tidak ditemukan');
     });
 
     it('should response 404 when the thread does not exist', async () => {
@@ -335,7 +335,7 @@ describe('/replies endpoint', () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(404);
       expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual('thread not found');
+      expect(responseJson.message).toEqual('thread tidak ditemukan');
     });
   });
 });

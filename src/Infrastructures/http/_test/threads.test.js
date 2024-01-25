@@ -144,7 +144,7 @@ describe('/threads endpoint', () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(404);
       expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual('thread not found');
+      expect(responseJson.message).toEqual('thread tidak ditemukan');
     });
   });
 });
