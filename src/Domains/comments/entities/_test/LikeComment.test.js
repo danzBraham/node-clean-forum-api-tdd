@@ -15,6 +15,7 @@ describe('LikeComment', () => {
     // Arrange
     const payload = {
       userId: 'user-123',
+      threadId: 'thread-123',
       commentId: 123,
     };
 
@@ -26,6 +27,7 @@ describe('LikeComment', () => {
     // Arrange
     const payload = {
       userId: 'user-123',
+      threadId: 'thread-123',
       commentId: 'comment-123',
     };
 
@@ -35,6 +37,7 @@ describe('LikeComment', () => {
     // Assert
     expect(likeComment).toBeInstanceOf(LikeComment);
     expect(likeComment.userId).toEqual(payload.userId);
+    expect(likeComment.threadId).toEqual(payload.threadId);
     expect(likeComment.commentId).toEqual(payload.commentId);
   });
 });
