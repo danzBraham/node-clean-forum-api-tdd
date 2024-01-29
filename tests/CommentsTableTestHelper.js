@@ -28,6 +28,29 @@ const CommentsTableTestHelper = {
     return rows;
   },
 
+  async addLike({
+    id = 'like-123',
+    commentId = 'comment-123',
+    userId = 'user-123',
+  }) {
+    const query = {
+      text: 'INSERT INTO comment_likes VALUES ($1, $2, $3)',
+      values: [id, commentId, userId],
+    };
+
+    await pool.query(query);
+  },
+
+  async findLikeById(id) {
+    const query = {
+      text: 'SELECT * FROM comment_likes WHERE id = $1',
+      values: [id],
+    };
+
+    const { rows } = await pool.query(query);
+    return rows;
+  },
+
   async cleanTable() {
     await pool.query('DELETE FROM comments WHERE 1 = 1');
   },
