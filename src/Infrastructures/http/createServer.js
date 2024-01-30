@@ -69,7 +69,7 @@ const createServer = async (container) => {
     path: '/',
     handler: (request, h) => h.response({
       status: 'success',
-      message: 'Welcome to Forum API',
+      message: 'Selamat Datang di Forum API',
     }),
   });
 
