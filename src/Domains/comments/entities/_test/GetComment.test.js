@@ -40,7 +40,7 @@ describe('GetComment', () => {
       date: '2024',
       content: 'Comment in a thread',
       is_deleted: false,
-      likes: 7,
+      likes: 0,
       replies: [],
     };
 
@@ -53,7 +53,7 @@ describe('GetComment', () => {
     expect(getComment.username).toEqual(payload.username);
     expect(getComment.date).toEqual(payload.date);
     expect(getComment.content).toEqual(payload.content);
-    expect(getComment.likeCount).toEqual(payload.likeCount);
+    expect(getComment.likes).toEqual(payload.likes);
     expect(getComment.replies).toEqual(payload.replies);
   });
 
@@ -65,7 +65,7 @@ describe('GetComment', () => {
       date: '2024',
       content: '**comment has been deleted**',
       is_deleted: true,
-      likes: 7,
+      likes: 0,
       replies: [],
     };
 
@@ -78,6 +78,7 @@ describe('GetComment', () => {
     expect(getComment.username).toEqual(payload.username);
     expect(getComment.date).toEqual(payload.date);
     expect(getComment.content).toEqual(payload.content);
+    expect(getComment.likes).toEqual(payload.likes);
     expect(getComment.replies).toEqual(payload.replies);
   });
 });

@@ -19,7 +19,13 @@ class GetComment {
   _verifyPayload({
     id, username, date, content, is_deleted, likes, replies,
   }) {
-    if (!id || !username || !date || !content || is_deleted === undefined || !likes || !replies) {
+    if (!id
+        || !username
+        || !date
+        || !content
+        || is_deleted === undefined
+        || !likes === undefined
+        || !replies) {
       throw new Error('GET_COMMENT.NOT_CONTAIN_REQUIRED_PROPERTY');
     }
 
