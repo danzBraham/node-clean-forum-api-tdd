@@ -21,6 +21,7 @@ describe('GetThreadUseCase', () => {
           username: 'danzbraham',
           date: '2024',
           content: 'a comment',
+          likeCount: 7,
           replies: [
             {
               id: 'reply-123',
@@ -62,6 +63,7 @@ describe('GetThreadUseCase', () => {
           date: '2024',
           content: 'a comment',
           is_deleted: false,
+          likes: 7,
           replies: [],
         }),
       ]));

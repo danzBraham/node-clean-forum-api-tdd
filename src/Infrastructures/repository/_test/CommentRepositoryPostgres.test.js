@@ -117,6 +117,7 @@ describe('CommentRepositoryPostgres', () => {
           date: fixedDate,
           content: 'a comment',
           is_deleted: false,
+          likes: 7,
           replies: [],
         }),
         new GetComment({
@@ -125,6 +126,7 @@ describe('CommentRepositoryPostgres', () => {
           date: fixedDate,
           content: 'a comment',
           is_deleted: false,
+          likes: 5,
           replies: [],
         }),
       ];
@@ -138,6 +140,7 @@ describe('CommentRepositoryPostgres', () => {
         content: 'a comment',
         owner: 'user-123',
         isDeleted: false,
+        likes: 7,
       });
 
       await UsersTableTestHelper.addUser({ id: 'user-456', username: 'abra' });
@@ -148,6 +151,7 @@ describe('CommentRepositoryPostgres', () => {
         content: 'a comment',
         owner: 'user-456',
         isDeleted: false,
+        likes: 5,
       });
 
       const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});

@@ -29,10 +29,10 @@ class GetThreadUseCase {
       });
 
       const {
-        id, username, date, content,
+        id, username, date, content, likes: likeCount,
       } = new GetComment(comment);
       return {
-        id, username, date, content, replies: getReplies,
+        id, username, date, content, likeCount, replies: getReplies,
       };
     }));
 
