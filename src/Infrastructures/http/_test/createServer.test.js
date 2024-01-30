@@ -53,7 +53,7 @@ describe('HTTP Server', () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(200);
       expect(responseJson.status).toEqual('success');
-      expect(responseJson.message).toEqual('Welcome to Forum API');
+      expect(responseJson.message).toEqual('Selamat Datang di Forum API');
     });
   });
 });
