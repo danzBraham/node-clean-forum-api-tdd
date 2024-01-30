@@ -55,7 +55,7 @@ describe('GetReply', () => {
       id: 'user-123',
       username: 'danzbraham',
       date: '2024',
-      content: '**reply has been deleted**',
+      content: '**balasan telah dihapus**',
       is_deleted: true,
     };
 

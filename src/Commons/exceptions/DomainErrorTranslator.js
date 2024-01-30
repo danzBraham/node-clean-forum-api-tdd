@@ -7,28 +7,28 @@ const DomainErrorTranslator = {
 };
 
 DomainErrorTranslator._directories = {
-  'REGISTER_USER.NOT_CONTAIN_REQUIRED_PROPERTY': new InvariantError('cannot create a user because the required properties are missing'),
-  'REGISTER_USER.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('cannot create a user because the data type does not meet data type specification'),
-  'REGISTER_USER.USERNAME_LIMIT_CHAR': new InvariantError('cannot create a user because the username character exceeds the limit'),
-  'REGISTER_USER.USERNAME_CONTAIN_RESTRICTED_CHARACTER': new InvariantError('cannot create a user because the username contains a restricted character'),
+  'REGISTER_USER.NOT_CONTAIN_REQUIRED_PROPERTY': new InvariantError('tidak dapat membuat user baru karena properti yang dibutuhkan tidak ada'),
+  'REGISTER_USER.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('tidak dapat membuat user baru karena tipe data tidak sesuai spesifikasi'),
+  'REGISTER_USER.USERNAME_LIMIT_CHAR': new InvariantError('tidak dapat membuat user baru karena karakter username melebihi batas'),
+  'REGISTER_USER.USERNAME_CONTAIN_RESTRICTED_CHARACTER': new InvariantError('tidak dapat membuat user baru karena username mengandung karakter terlarang'),
 
-  'USER_LOGIN.NOT_CONTAIN_REQUIRED_PROPERTY': new InvariantError('must provide a username and password'),
-  'USER_LOGIN.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('username and password must be strings'),
+  'USER_LOGIN.NOT_CONTAIN_REQUIRED_PROPERTY': new InvariantError('harus menyediakan username dan password'),
+  'USER_LOGIN.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('username and password harus berupa string'),
 
-  'REFRESH_AUTHENTICATION_USE_CASE.NOT_CONTAIN_REFRESH_TOKEN': new InvariantError('must provide a refresh token'),
-  'REFRESH_AUTHENTICATION_USE_CASE.PAYLOAD_NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('refresh token must be a string'),
+  'REFRESH_AUTHENTICATION_USE_CASE.NOT_CONTAIN_REFRESH_TOKEN': new InvariantError('harus menyediakan refresh token'),
+  'REFRESH_AUTHENTICATION_USE_CASE.PAYLOAD_NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('refresh token harus berupa string'),
 
-  'LOGOUT_USER_USE_CASE.NOT_CONTAIN_REFRESH_TOKEN': new InvariantError('must provide a refresh token'),
-  'LOGOUT_USER_USE_CASE.PAYLOAD_NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('refresh token must be a string'),
+  'LOGOUT_USER_USE_CASE.NOT_CONTAIN_REFRESH_TOKEN': new InvariantError('harus menyediakan refresh token'),
+  'LOGOUT_USER_USE_CASE.PAYLOAD_NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('refresh token harus berupa string'),
 
-  'ADD_THREAD.NOT_CONTAIN_REQUIRED_PROPERTY': new InvariantError('cannot create a thread because the required properties are missing'),
-  'ADD_THREAD.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('cannot create a thread because the data type does not meet data type specification'),
+  'ADD_THREAD.NOT_CONTAIN_REQUIRED_PROPERTY': new InvariantError('tidak dapat membuat thread karena properti yang dibutuhkan tidak ada'),
+  'ADD_THREAD.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('tidak dapat membuat thread karena tipe data tidak sesuai spesifikasi'),
 
-  'ADD_COMMENT.NOT_CONTAIN_REQUIRED_PROPERTY': new InvariantError('cannot create a comment because the required properties are missing'),
-  'ADD_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('cannot create a comment because the data type does not meet data type specification'),
+  'ADD_COMMENT.NOT_CONTAIN_REQUIRED_PROPERTY': new InvariantError('tidak dapat membuat komentar karena properti yang dibutuhkan tidak ada'),
+  'ADD_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('tidak dapat membuat komentar karena tipe data tidak sesuai spesifikasi'),
 
-  'ADD_REPLY.NOT_CONTAIN_REQUIRED_PROPERTY': new InvariantError('cannot create a reply because the required properties are missing'),
-  'ADD_REPLY.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('cannot create a reply because the data type does not meet data type specification'),
+  'ADD_REPLY.NOT_CONTAIN_REQUIRED_PROPERTY': new InvariantError('tidak dapat membuat balasan karena properti yang dibutuhkan tidak ada'),
+  'ADD_REPLY.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('tidak dapat membuat balasan karena tipe data tidak sesuai spesifikasi'),
 };
 
 module.exports = DomainErrorTranslator;

@@ -24,7 +24,7 @@ class GetComment {
         || !date
         || !content
         || is_deleted === undefined
-        || !likes === undefined
+        || likes === undefined
         || !replies) {
       throw new Error('GET_COMMENT.NOT_CONTAIN_REQUIRED_PROPERTY');
     }
@@ -42,6 +42,6 @@ class GetComment {
   }
 }
 
-GetComment.DELETE_COMMENT_MESSAGE = '**comment has been deleted**';
+GetComment.DELETE_COMMENT_MESSAGE = '**komentar telah dihapus**';
 
 module.exports = GetComment;

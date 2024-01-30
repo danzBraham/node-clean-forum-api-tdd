@@ -35,7 +35,7 @@ class ReplyRepositoryPostgres extends ReplyRepository {
     const result = await this._pool.query(query);
 
     if (!result.rowCount) {
-      throw new NotFoundError('reply not found');
+      throw new NotFoundError('balasan tidak ditemukan');
     }
   }
 
@@ -65,7 +65,7 @@ class ReplyRepositoryPostgres extends ReplyRepository {
     const result = await this._pool.query(query);
 
     if (!result.rowCount) {
-      throw new AuthorizationError('you cannot delete this reply');
+      throw new AuthorizationError('anda tidak bisa menghapus balasan ini');
     }
   }
 }
