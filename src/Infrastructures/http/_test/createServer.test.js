@@ -37,4 +37,23 @@ describe('HTTP Server', () => {
     expect(responseJson.status).toEqual('error');
     expect(responseJson.message).toEqual('there was a failure on our server');
   });
+
+  describe('when GET /', () => {
+    it('should response 200 and appropriate message', async () => {
+      // Arrange
+      const server = await createServer({});
+
+      // Action
+      const response = await server.inject({
+        method: 'GET',
+        url: '/',
+      });
+
+      // Assert
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(200);
+      expect(responseJson.status).toEqual('success');
+      expect(responseJson.message).toEqual('Welcome to Forum API');
+    });
+  });
 });
