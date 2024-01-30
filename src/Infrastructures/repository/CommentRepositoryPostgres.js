@@ -3,6 +3,7 @@ const NotFoundError = require('../../Commons/exceptions/NotFoundError');
 const AddComment = require('../../Domains/comments/entities/AddComment');
 const AddedComment = require('../../Domains/comments/entities/AddedComment');
 const GetComment = require('../../Domains/comments/entities/GetComment');
+const LikeComment = require('../../Domains/comments/entities/LikeComment');
 const DeleteComment = require('../../Domains/comments/entities/DeleteComment');
 const CommentRepository = require('../../Domains/comments/CommentRepository');
 
@@ -51,6 +52,52 @@ class CommentRepositoryPostgres extends CommentRepository {
     const result = await this._pool.query(query);
 
     return result.rows.map((comment) => (new GetComment({ ...comment, replies: [] })));
+  }
+
+  async updateLikeComment(comment) {
+    const { userId, commentId } = new LikeComment(comment);
+
+    const queryCommentLikes = {
+      text: `SELECT * FROM comment_likes
+              WHERE comment_id = $1 AND user_id = $2`,
+      values: [commentId, userId],
+    };
+    const { rowCount } = await this._pool.query(queryCommentLikes);
+
+    if (!rowCount) {
+      const id = `like-${this._idGenerator()}`;
+
+      const queryInsertCommentLikes = {
+        text: `INSERT INTO comment_likes
+                VALUES ($1, $2, $3)`,
+        values: [id, commentId, userId],
+      };
+      await this._pool.query(queryInsertCommentLikes);
+    } else {
+      const queryDeleteCommentLikes = {
+        text: `DELETE FROM comment_likes
+                WHERE comment_id = $1 AND user_id = $2`,
+        values: [commentId, userId],
+      };
+      await this._pool.query(queryDeleteCommentLikes);
+    }
+
+    const queryCountCommentLikes = {
+      text: `SELECT count(*)
+              FROM comment_likes
+              WHERE comment_id = $1`,
+      values: [commentId],
+    };
+    const { rows } = await this._pool.query(queryCountCommentLikes);
+    const { count } = rows[0];
+
+    const queryUpdateLikeComment = {
+      text: `UPDATE comments
+              SET likes = $1
+              WHERE id = $2`,
+      values: [count, commentId],
+    };
+    await this._pool.query(queryUpdateLikeComment);
   }
 
   async deleteComment(comment) {
