@@ -9,6 +9,7 @@ describe('GetComment', () => {
       date: '2024',
       content: 'Comment in a thread',
       is_deleted: false,
+      likes: 0,
     };
 
     // Action & Assert
@@ -23,6 +24,7 @@ describe('GetComment', () => {
       date: 2024,
       content: 'Comment in a thread',
       is_deleted: false,
+      likes: [],
       replies: [],
     };
 
@@ -38,6 +40,7 @@ describe('GetComment', () => {
       date: '2024',
       content: 'Comment in a thread',
       is_deleted: false,
+      likes: 7,
       replies: [],
     };
 
@@ -50,6 +53,7 @@ describe('GetComment', () => {
     expect(getComment.username).toEqual(payload.username);
     expect(getComment.date).toEqual(payload.date);
     expect(getComment.content).toEqual(payload.content);
+    expect(getComment.likeCount).toEqual(payload.likeCount);
     expect(getComment.replies).toEqual(payload.replies);
   });
 
@@ -61,6 +65,7 @@ describe('GetComment', () => {
       date: '2024',
       content: '**komentar telah dihapus**',
       is_deleted: true,
+      likes: 7,
       replies: [],
     };
 

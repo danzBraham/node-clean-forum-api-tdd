@@ -8,6 +8,14 @@ const routes = (handler) => ([
     },
   },
   {
+    method: 'PUT',
+    path: '/threads/{threadId}/comments/{commentId}/likes',
+    handler: handler.updateLikeCommentByIdHandler,
+    options: {
+      auth: 'forum-api-jwt',
+    },
+  },
+  {
     method: 'DELETE',
     path: '/threads/{threadId}/comments/{commentId}',
     handler: handler.deleteCommentByIdHandler,
