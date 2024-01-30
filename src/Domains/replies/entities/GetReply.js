@@ -6,6 +6,7 @@ class GetReply {
     const {
       id, username, date, content, is_deleted,
     } = payload;
+
     this.id = id;
     this.username = username;
     this.date = date;

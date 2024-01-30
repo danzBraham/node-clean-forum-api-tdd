@@ -53,7 +53,7 @@ describe('GetComment', () => {
     expect(getComment.username).toEqual(payload.username);
     expect(getComment.date).toEqual(payload.date);
     expect(getComment.content).toEqual(payload.content);
-    expect(getComment.likeCount).toEqual(payload.likeCount);
+    expect(getComment.likes).toEqual(payload.likes);
     expect(getComment.replies).toEqual(payload.replies);
   });
 
@@ -78,6 +78,7 @@ describe('GetComment', () => {
     expect(getComment.username).toEqual(payload.username);
     expect(getComment.date).toEqual(payload.date);
     expect(getComment.content).toEqual(payload.content);
+    expect(getComment.likes).toEqual(payload.likes);
     expect(getComment.replies).toEqual(payload.replies);
   });
 });
