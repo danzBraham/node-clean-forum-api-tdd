@@ -40,7 +40,7 @@ describe('GetComment', () => {
       date: '2024',
       content: 'Comment in a thread',
       is_deleted: false,
-      likes: 7,
+      likes: 0,
       replies: [],
     };
 
@@ -65,7 +65,7 @@ describe('GetComment', () => {
       date: '2024',
       content: '**komentar telah dihapus**',
       is_deleted: true,
-      likes: 7,
+      likes: 0,
       replies: [],
     };
 
